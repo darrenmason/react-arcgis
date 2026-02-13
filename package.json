@@ -1,0 +1,46 @@
+{
+  "name": "react-arcgis",
+  "version": "1.0.0",
+  "description": "React wrapper components for ArcGIS SDK for JavaScript",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "example": "cd example && npm start",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "react",
+    "arcgis",
+    "esri",
+    "maps",
+    "gis",
+    "mapping"
+  ],
+  "author": "",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "@arcgis/core": "^4.28.0"
+  },
+  "devDependencies": {
+    "@arcgis/core": "^4.28.0",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^11.1.5",
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "rollup": "^4.9.1",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "tslib": "^2.6.2",
+    "typescript": "^5.3.3"
+  },
+  "files": [
+    "dist"
+  ]
+}
