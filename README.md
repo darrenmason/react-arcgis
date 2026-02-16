@@ -7,6 +7,7 @@ A React-friendly wrapper library for the ArcGIS SDK for JavaScript, providing de
 - 🎯 **React-First Design**: Components follow React patterns with proper lifecycle management
 - 🔄 **Declarative API**: Configure maps and layers using JSX and props
 - 🎣 **Custom Hooks**: Reusable hooks for common ArcGIS operations
+- 🌓 **Theme Support**: Built-in light/dark mode with auto system preference support
 - 📦 **TypeScript Support**: Full TypeScript definitions included
 - 🌍 **Comprehensive Components**: Map, MapView, SceneView, and various layer types
 - 🔌 **Context API Integration**: Share view and map instances across components
@@ -18,15 +19,14 @@ A React-friendly wrapper library for the ArcGIS SDK for JavaScript, providing de
 npm install react-arcgis @arcgis/core
 ```
 
-Don't forget to include the required CSS in your application:
+Don't forget to include the Calcite CSS if using Calcite components:
 
 ```tsx
-// ArcGIS CSS (required)
-import '@arcgis/core/assets/esri/themes/light/main.css';
-
-// Calcite CSS (optional, for Calcite components)
+// Calcite CSS (when using Calcite components)
 import '@esri/calcite-components/dist/calcite/calcite.css';
 ```
+
+**Note:** The ArcGIS theme CSS is automatically managed by the `useTheme` or `useArcGISTheme` hooks. See [Theme Support](#theme-support) below.
 
 ## Quick Start
 
@@ -417,6 +417,46 @@ import type {
   ViewContext
 } from 'react-arcgis';
 ```
+
+## Theme Support
+
+React ArcGIS provides built-in theme support for both Calcite components and ArcGIS maps with light mode, dark mode, and automatic system preference detection.
+
+### Quick Example
+
+```tsx
+import { useState } from 'react';
+import { Map, MapView, useTheme, CalciteButton } from 'react-arcgis';
+
+function App() {
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  useTheme(theme);  // Single hook manages both Calcite and ArcGIS themes
+
+  return (
+    <>
+      <CalciteButton onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>
+        Toggle Theme
+      </CalciteButton>
+      <Map basemap="topo-vector">
+        <MapView center={[-118.805, 34.027]} zoom={13} />
+      </Map>
+    </>
+  );
+}
+```
+
+**Available Hooks:**
+- `useTheme(mode)` - Manages both Calcite and ArcGIS themes (recommended)
+- `useCalciteMode(mode)` - Controls only Calcite components
+- `useArcGISTheme(theme)` - Controls only ArcGIS maps/widgets
+- `useSystemTheme()` - Returns current system preference
+
+**Theme Modes:** `'light'`, `'dark'`, `'auto'` (follows system preference)
+
+**Learn More:**
+- [Quick Start Guide](./THEME_QUICK_START.md)
+- [Complete Theming Guide](./THEMING.md)
+- [Theme Example](./example/src/ThemeExample.tsx)
 
 ## Calcite Design System
 

@@ -8,3 +8,7 @@ export { usePropertyUpdater } from './usePropertyUpdater';
 export { useEventHandlers } from './useEventHandlers';
 export { useLayer } from './useLayer';
 export { useEsriView } from './useView';
+export { useCalciteMode } from './useCalciteMode';
+export { useArcGISTheme } from './useArcGISTheme';
+export { useTheme, useSystemTheme, getSystemTheme } from './useTheme';
+export type { CalciteMode, ArcGISTheme, Theme, ThemeMode } from './useTheme';

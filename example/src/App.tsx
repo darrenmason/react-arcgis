@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Map, MapView, FeatureLayer, useSearch } from 'react-arcgis';
-import '@arcgis/core/assets/esri/themes/light/main.css';
+import { Map, MapView, FeatureLayer, useTheme } from 'react-arcgis';
 
 function App() {
   const [basemap, setBasemap] = useState('topo-vector');
   const [zoom, setZoom] = useState(4);
   const [center, setCenter] = useState<[number, number]>([-98.5795, 39.8283]);
+  
+  // Initialize theme (defaults to light mode)
+  useTheme('light');
 
   return (
     <div className="app">
