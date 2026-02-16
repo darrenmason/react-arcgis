@@ -109,6 +109,7 @@ export {
   // Portal and web maps
   usePortal,
   useWebMap,
+  useWebScene,
   
   // Utility hooks
   useWatchUtils,

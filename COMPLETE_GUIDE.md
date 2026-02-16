@@ -57,9 +57,14 @@ function App() {
 // 3D view
 <SceneView camera={{...}} />
 
-// Load from Portal
+// Load from Portal (WebMap/WebScene)
 <WebMap portalItem={{ id: "abc123" }} />
 <WebScene portalItem={{ id: "xyz789" }} />
+
+// Or use hooks
+const { webMap, loading, error } = useWebMap({
+  portalItem: { id: "abc123" }
+});
 ```
 
 ### Widget Components (18)
@@ -90,6 +95,54 @@ Complete UI toolkit with declarative JSX components:
 - Expand
 
 👉 **[Widget Library Guide →](./WIDGET_LIBRARY.md)**
+
+---
+
+### WebMap/WebScene Support
+
+Load pre-configured maps and scenes from ArcGIS Online or Portal:
+
+**Component API:**
+```tsx
+// Load 2D WebMap
+<WebMap portalItem={{ id: 'e691172598f04ea8881cd2a4adaa45ba' }}>
+  <MapView>
+    <Search position="top-right" />
+    <LayerList position="top-right" />
+  </MapView>
+</WebMap>
+
+// Load 3D WebScene
+<WebScene portalItem={{ id: '579f97b2f3b94d4a8e48a5f140a6639b' }}>
+  <SceneView>
+    <Home position="top-left" />
+    <ElevationProfile position="bottom" />
+  </SceneView>
+</WebScene>
+```
+
+**Hook API:**
+```tsx
+// With loading states and error handling
+const { webMap, loading, error } = useWebMap({
+  portalItem: { id: 'e691172598f04ea8881cd2a4adaa45ba' }
+});
+
+if (loading) return <Loader />;
+if (error) return <Error error={error} />;
+
+return <MapView map={webMap} />;
+```
+
+**Features:**
+- ✅ Load maps from ArcGIS Online/Portal
+- ✅ Component and Hook APIs
+- ✅ Loading state management
+- ✅ Error handling
+- ✅ Portal authentication support
+- ✅ All widgets compatible
+
+👉 **[WebMap/WebScene Guide →](./WEBMAP_WEBSCENE_GUIDE.md)**
 
 ---
 
@@ -154,21 +207,28 @@ useWatchUtils(view, 'zoom', (newZoom) => {
 });
 ```
 
-### Portal & Data Hooks (2)
+### Portal & Data Hooks (3)
 
 ```tsx
-import { usePortal, useWebMap } from 'react-arcgis';
+import { usePortal, useWebMap, useWebScene } from 'react-arcgis';
 
 // Connect to Portal
 const { portal, user, signIn, signOut } = usePortal({
   url: 'https://www.arcgis.com'
 });
 
-// Load WebMap
+// Load WebMap (2D)
 const { webMap, loading, error } = useWebMap({
   portalItem: { id: 'abc123' }
 });
+
+// Load WebScene (3D)
+const { webScene, loading, error } = useWebScene({
+  portalItem: { id: 'xyz789' }
+});
 ```
+
+👉 **[WebMap/WebScene Guide →](./WEBMAP_WEBSCENE_GUIDE.md)**
 
 ### Theme Hooks (4)
 

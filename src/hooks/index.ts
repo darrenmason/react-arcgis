@@ -19,6 +19,7 @@ export { useGeocoding } from './useGeocoding';
 // Portal and web maps
 export { usePortal } from './usePortal';
 export { useWebMap } from './useWebMap';
+export { useWebScene } from './useWebScene';
 
 // Utility hooks
 export { useWatchUtils, useWatchWhen } from './useWatchUtils';

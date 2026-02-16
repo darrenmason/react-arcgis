@@ -605,6 +605,7 @@ const renderer = useMemo(() => ({
 
 - [Widget Library Guide](./WIDGET_LIBRARY.md) - Complete documentation for all 18 widget components
 - [Layer Library Guide](./LAYER_LIBRARY.md) - Complete documentation for all 23 layer components
+- [WebMap/WebScene Guide](./WEBMAP_WEBSCENE_GUIDE.md) - Load maps from ArcGIS Online/Portal
 - [Layer Quick Reference](./LAYER_GUIDE_QUICK.md) - Quick reference and layer selection guide
 - [Theming Guide](./THEMING.md) - Theme system documentation
 - [What's New](./WHATS_NEW.md) - Latest features and improvements

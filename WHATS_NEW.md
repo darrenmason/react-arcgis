@@ -63,6 +63,57 @@ import {
 
 **See [Widget Library Guide](./WIDGET_LIBRARY.md) for complete documentation.**
 
+### 🗺️ WebMap/WebScene Support Enhanced
+
+Complete support for loading maps and scenes from ArcGIS Online and Portal with both Component and Hook APIs:
+
+**Component API:**
+```tsx
+// Load 2D WebMap
+<WebMap portalItem={{ id: 'e691172598f04ea8881cd2a4adaa45ba' }}>
+  <MapView>
+    <Search position="top-right" />
+    <LayerList position="top-right" />
+  </MapView>
+</WebMap>
+
+// Load 3D WebScene
+<WebScene portalItem={{ id: '579f97b2f3b94d4a8e48a5f140a6639b' }}>
+  <SceneView>
+    <Home position="top-left" />
+    <ElevationProfile position="bottom" />
+  </SceneView>
+</WebScene>
+```
+
+**Hook API (NEW):**
+```tsx
+// useWebMap - 2D maps
+const { webMap, loading, error } = useWebMap({
+  portalItem: { id: 'e691172598f04ea8881cd2a4adaa45ba' }
+});
+
+// useWebScene - 3D scenes (NEW!)
+const { webScene, loading, error } = useWebScene({
+  portalItem: { id: '579f97b2f3b94d4a8e48a5f140a6639b' }
+});
+
+if (loading) return <Loader />;
+if (error) return <Error error={error} />;
+
+return <MapView map={webMap} />;
+```
+
+**Features:**
+- ✅ `useWebScene` hook added
+- ✅ Loading state management
+- ✅ Error handling
+- ✅ Dynamic map/scene selection
+- ✅ Portal authentication support
+- ✅ Comprehensive documentation
+
+**See [WebMap/WebScene Guide](./WEBMAP_WEBSCENE_GUIDE.md) for complete documentation.**
+
 ### 📦 7 New Layer Components
 
 ```tsx

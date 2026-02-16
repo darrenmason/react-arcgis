@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { Map, MapView, FeatureLayer, useTheme } from 'react-arcgis';
 import { WidgetLibraryExample } from './WidgetLibraryExample';
 import { LayerLibraryExample } from './LayerLibraryExample';
+import { WebMapWebSceneExample } from './WebMapWebSceneExample';
 
-type ExampleTab = 'basic' | 'widgets' | 'layers';
+type ExampleTab = 'basic' | 'widgets' | 'layers' | 'webmap';
 
 function App() {
   const [activeTab, setActiveTab] = useState<ExampleTab>('basic');
@@ -20,6 +21,8 @@ function App() {
         return <WidgetLibraryExample />;
       case 'layers':
         return <LayerLibraryExample />;
+      case 'webmap':
+        return <WebMapWebSceneExample />;
       case 'basic':
       default:
         return (
@@ -120,6 +123,12 @@ function App() {
             onClick={() => setActiveTab('layers')}
           >
             Layer Library (23 Layers)
+          </button>
+          <button
+            className={activeTab === 'webmap' ? 'active' : ''}
+            onClick={() => setActiveTab('webmap')}
+          >
+            WebMap/WebScene
           </button>
         </nav>
       </header>
