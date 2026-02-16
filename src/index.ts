@@ -7,16 +7,40 @@ export { WebScene } from './components/WebScene';
 
 // Layer Components
 export {
+  // Vector & Feature Layers
   FeatureLayer,
   GraphicsLayer,
   GeoJSONLayer,
+  CSVLayer,
+  StreamLayer,
+  
+  // Tile Layers
   TileLayer,
   VectorTileLayer,
+  WebTileLayer,
+  ImageryTileLayer,
+  
+  // Dynamic & Imagery Layers
   MapImageLayer,
   ImageryLayer,
-  CSVLayer,
+  
+  // 3D Layers
+  SceneLayer,
+  BuildingSceneLayer,
+  IntegratedMeshLayer,
+  PointCloudLayer,
+  ElevationLayer,
+  
+  // OGC & Standards
+  WMSLayer,
+  WMTSLayer,
+  WFSLayer,
+  OGCFeatureLayer,
   KMLLayer,
-  GroupLayer
+  
+  // Organization
+  GroupLayer,
+  SubtypeGroupLayer
 } from './components/layers';
 
 // All Hooks
@@ -88,9 +112,22 @@ export type {
 // Re-export layer prop types
 export type { TileLayerProps } from './components/layers/TileLayer';
 export type { VectorTileLayerProps } from './components/layers/VectorTileLayer';
+export type { WebTileLayerProps } from './components/layers/WebTileLayer';
+export type { ImageryTileLayerProps } from './components/layers/ImageryTileLayer';
 export type { MapImageLayerProps } from './components/layers/MapImageLayer';
 export type { ImageryLayerProps } from './components/layers/ImageryLayer';
 export type { CSVLayerProps } from './components/layers/CSVLayer';
+export type { StreamLayerProps } from './components/layers/StreamLayer';
 export type { KMLLayerProps } from './components/layers/KMLLayer';
 export type { GroupLayerProps } from './components/layers/GroupLayer';
 export type { GeoJSONLayerProps } from './components/layers/GeoJSONLayer';
+export type { WMSLayerProps } from './components/layers/WMSLayer';
+export type { WMTSLayerProps } from './components/layers/WMTSLayer';
+export type { WFSLayerProps } from './components/layers/WFSLayer';
+export type { OGCFeatureLayerProps } from './components/layers/OGCFeatureLayer';
+export type { SceneLayerProps } from './components/layers/SceneLayer';
+export type { BuildingSceneLayerProps } from './components/layers/BuildingSceneLayer';
+export type { IntegratedMeshLayerProps } from './components/layers/IntegratedMeshLayer';
+export type { PointCloudLayerProps } from './components/layers/PointCloudLayer';
+export type { ElevationLayerProps } from './components/layers/ElevationLayer';
+export type { SubtypeGroupLayerProps } from './components/layers/SubtypeGroupLayer';

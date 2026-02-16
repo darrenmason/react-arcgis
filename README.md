@@ -133,7 +133,19 @@ The `SceneView` component creates a 3D scene view.
 - `onLoad`: (view: SceneView) => void - Load callback
 - `onViewReady`: (view: SceneView) => void - Ready callback
 
-## Layer Components
+## Layer Components (23 Total)
+
+React ArcGIS includes **23 layer components** covering every ArcGIS Maps SDK layer type:
+
+- **Vector & Features (5):** FeatureLayer, GraphicsLayer, GeoJSONLayer, CSVLayer, StreamLayer
+- **Tile Services (4):** TileLayer, VectorTileLayer, WebTileLayer, ImageryTileLayer
+- **Dynamic & Imagery (2):** MapImageLayer, ImageryLayer
+- **3D Layers (5):** SceneLayer, BuildingSceneLayer, IntegratedMeshLayer, PointCloudLayer, ElevationLayer
+- **OGC Standards (5):** WMSLayer, WMTSLayer, WFSLayer, OGCFeatureLayer, KMLLayer
+- **Organization (2):** GroupLayer, SubtypeGroupLayer
+
+📚 **[Complete Layer Documentation →](./LAYER_LIBRARY.md)**
+📋 **[Quick Reference Guide →](./LAYER_GUIDE_QUICK.md)**
 
 ### FeatureLayer
 
