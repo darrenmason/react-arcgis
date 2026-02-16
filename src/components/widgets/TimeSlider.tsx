@@ -10,7 +10,7 @@ export interface TimeSliderProps {
   fullTimeExtent?: __esri.TimeExtent;
   mode?: 'instant' | 'time-window' | 'cumulative-from-start' | 'cumulative-from-end';
   playRate?: number;
-  stops?: __esri.TimeSliderStops;
+  stops?: any; // TimeSliderStops type not exported
   loop?: boolean;
   onTimeExtentChange?: (event: any) => void;
   onLoad?: (widget: EsriTimeSlider) => void;

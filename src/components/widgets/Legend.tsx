@@ -8,7 +8,7 @@ export interface LegendProps {
   position?: string | __esri.UIAddPosition;
   style?: 'classic' | 'card';
   respectLayerVisibility?: boolean;
-  layerInfos?: __esri.LegendLayerInfos[];
+  layerInfos?: any[]; // LegendLayerInfos type not exported
   onLoad?: (widget: EsriLegend) => void;
 }
 

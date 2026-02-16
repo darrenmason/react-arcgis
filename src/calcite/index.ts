@@ -57,7 +57,6 @@ export {
   CalciteLoader,
   CalciteMenu,
   CalciteMenuItem,
-  CalciteMenuItemGroup,
   CalciteModal,
   CalciteNavigation,
   CalciteNavigationLogo,
@@ -69,7 +68,6 @@ export {
   CalcitePanel,
   CalcitePopover,
   CalciteProgress,
-  CalciteRadio,
   CalciteRadioButton,
   CalciteRadioButtonGroup,
   CalciteRating,
@@ -81,7 +79,6 @@ export {
   CalciteShellCenterRow,
   CalciteShellPanel,
   CalciteSlider,
-  CalciteSplit,
   CalciteStepper,
   CalciteStepperItem,
   CalciteSwitch,
@@ -89,7 +86,6 @@ export {
   CalciteTabNav,
   CalciteTabTitle,
   CalciteTabs,
-  CalciteTag,
   CalciteTextArea,
   CalciteTip,
   CalciteTipGroup,
@@ -101,21 +97,5 @@ export {
   CalciteValueListItem
 } from '@esri/calcite-components-react';
 
-// Export types for TypeScript users
-export type {
-  CalciteActionCustomEvent,
-  CalciteAlertCustomEvent,
-  CalciteButtonCustomEvent,
-  CalciteCheckboxCustomEvent,
-  CalciteComboboxCustomEvent,
-  CalciteDatePickerCustomEvent,
-  CalciteInputCustomEvent,
-  CalciteListCustomEvent,
-  CalciteModalCustomEvent,
-  CalcitePanelCustomEvent,
-  CalciteSelectCustomEvent,
-  CalciteShellCustomEvent,
-  CalciteSliderCustomEvent,
-  CalciteSwitchCustomEvent,
-  CalciteTabsCustomEvent
-} from '@esri/calcite-components-react';
+// Note: Custom event types are not exported by @esri/calcite-components-react
+// Use the standard React event types instead (e.g., onCalciteSelectChange, onCalciteSwitchChange)

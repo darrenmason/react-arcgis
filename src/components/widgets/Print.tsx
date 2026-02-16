@@ -7,7 +7,7 @@ export interface PrintProps {
   view?: __esri.MapView | __esri.SceneView;
   position?: string | __esri.UIAddPosition;
   printServiceUrl?: string;
-  templateOptions?: __esri.PrintTemplateOptions;
+  templateOptions?: any; // PrintTemplateOptions type not exported, use any
   allowedFormats?: string[];
   allowedLayouts?: string[];
   onLoad?: (widget: EsriPrint) => void;
