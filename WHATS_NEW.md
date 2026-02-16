@@ -114,6 +114,85 @@ return <MapView map={webMap} />;
 
 **See [WebMap/WebScene Guide](./WEBMAP_WEBSCENE_GUIDE.md) for complete documentation.**
 
+### 🔬 8 Analysis Hooks
+
+Specialized hooks for advanced GIS queries and analysis:
+
+```tsx
+import {
+  useQueryFeatures,     // Advanced feature queries
+  useStatistics,        // Statistical calculations
+  useSpatialQuery,      // Spatial operations
+  useIdentify,          // Feature identification
+  useBufferAnalysis,    // Buffer analysis
+  useGeometryMeasurement, // Distance/area measurement
+  useRouteAnalysis,     // Routing & service areas
+  useClosestFacility    // Nearest facility
+} from 'react-arcgis';
+
+// Advanced queries
+const { query, queryCount, queryExtent } = useQueryFeatures(featureLayer);
+const features = await query({
+  where: "POP > 1000000",
+  geometry: point,
+  spatialRelationship: 'intersects',
+  distance: 50,
+  units: 'miles',
+  outFields: ['*']
+});
+
+// Statistics
+const { calculateStatistics } = useStatistics(featureLayer);
+const stats = await calculateStatistics({
+  statisticDefinitions: [
+    { statisticType: 'sum', onStatisticField: 'POP', outStatisticFieldName: 'total' },
+    { statisticType: 'avg', onStatisticField: 'POP', outStatisticFieldName: 'avg' }
+  ],
+  groupByFieldsForStatistics: ['STATE']
+});
+
+// Spatial queries
+const { findNearby, findWithin } = useSpatialQuery(featureLayer);
+const nearby = await findNearby(point, { distance: 10, units: 'miles' });
+
+// Buffer analysis
+const { buffer, bufferMultiple } = useBufferAnalysis();
+const buffered = await buffer(point, { distance: 5, unit: 'miles', geodesic: true });
+
+// Measurements
+const { measureDistance, measureArea } = useGeometryMeasurement();
+const distance = await measureDistance(point1, point2, 'miles');
+const area = await measureArea(polygon, 'square-miles');
+
+// Routing
+const { solveRoute, calculateServiceArea } = useRouteAnalysis(serviceUrl);
+const route = await solveRoute({
+  stops: [start, end],
+  returnDirections: true
+});
+
+// Closest facility
+const { findClosestFacility } = useClosestFacility(serviceUrl);
+const nearest = await findClosestFacility({
+  incidents: [incident],
+  facilities: facilities,
+  defaultTargetFacilityCount: 3
+});
+```
+
+**Features:**
+- ✅ Advanced feature queries
+- ✅ Statistical calculations
+- ✅ Spatial operations (nearby, within, intersects)
+- ✅ Buffer analysis
+- ✅ Geometry measurements
+- ✅ Routing & directions
+- ✅ Service area analysis
+- ✅ Closest facility finding
+- ✅ Full TypeScript support
+
+**See [Analysis Hooks Guide](./ANALYSIS_HOOKS_GUIDE.md) for complete documentation.**
+
 ### 📦 7 New Layer Components
 
 ```tsx

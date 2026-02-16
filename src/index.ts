@@ -111,6 +111,16 @@ export {
   useWebMap,
   useWebScene,
   
+  // Query & Analysis hooks
+  useQueryFeatures,
+  useStatistics,
+  useSpatialQuery,
+  useIdentify,
+  useBufferAnalysis,
+  useGeometryMeasurement,
+  useRouteAnalysis,
+  useClosestFacility,
+  
   // Utility hooks
   useWatchUtils,
   useWatchWhen,

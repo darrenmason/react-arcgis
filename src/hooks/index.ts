@@ -21,6 +21,16 @@ export { usePortal } from './usePortal';
 export { useWebMap } from './useWebMap';
 export { useWebScene } from './useWebScene';
 
+// Query & Analysis hooks
+export { useQueryFeatures } from './useQueryFeatures';
+export { useStatistics } from './useStatistics';
+export { useSpatialQuery } from './useSpatialQuery';
+export { useIdentify } from './useIdentify';
+export { useBufferAnalysis } from './useBufferAnalysis';
+export { useGeometryMeasurement } from './useGeometryMeasurement';
+export { useRouteAnalysis } from './useRouteAnalysis';
+export { useClosestFacility } from './useClosestFacility';
+
 // Utility hooks
 export { useWatchUtils, useWatchWhen } from './useWatchUtils';
 

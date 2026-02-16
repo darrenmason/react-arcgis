@@ -230,6 +230,74 @@ const { webScene, loading, error } = useWebScene({
 
 👉 **[WebMap/WebScene Guide →](./WEBMAP_WEBSCENE_GUIDE.md)**
 
+---
+
+### Query & Analysis Hooks (8)
+
+Advanced hooks for GIS queries and analysis:
+
+```tsx
+import {
+  useQueryFeatures,
+  useStatistics,
+  useSpatialQuery,
+  useIdentify,
+  useBufferAnalysis,
+  useGeometryMeasurement,
+  useRouteAnalysis,
+  useClosestFacility
+} from 'react-arcgis';
+
+// Advanced feature queries
+const { query, queryCount, queryExtent } = useQueryFeatures(featureLayer);
+const features = await query({
+  where: "POP > 1000000",
+  geometry: point,
+  spatialRelationship: 'intersects',
+  distance: 50,
+  units: 'miles'
+});
+
+// Statistical calculations
+const { calculateStatistics } = useStatistics(featureLayer);
+const stats = await calculateStatistics({
+  statisticDefinitions: [
+    { statisticType: 'sum', onStatisticField: 'POP', outStatisticFieldName: 'total' },
+    { statisticType: 'avg', onStatisticField: 'POP', outStatisticFieldName: 'avg' }
+  ]
+});
+
+// Spatial operations
+const { findNearby, findWithin } = useSpatialQuery(featureLayer);
+const nearby = await findNearby(point, { distance: 10, units: 'miles' });
+
+// Buffer analysis
+const { buffer } = useBufferAnalysis();
+const buffered = await buffer(point, { distance: 5, unit: 'miles', geodesic: true });
+
+// Measurements
+const { measureDistance, measureArea } = useGeometryMeasurement();
+const distance = await measureDistance(point1, point2, 'miles');
+const area = await measureArea(polygon, 'square-miles');
+
+// Routing
+const { solveRoute } = useRouteAnalysis(routeServiceUrl);
+const route = await solveRoute({
+  stops: [graphic1, graphic2],
+  returnDirections: true
+});
+
+// Closest facility
+const { findClosestFacility } = useClosestFacility(serviceUrl);
+const nearest = await findClosestFacility({
+  incidents: [incident],
+  facilities: facilities,
+  defaultTargetFacilityCount: 3
+});
+```
+
+👉 **[Analysis Hooks Guide →](./ANALYSIS_HOOKS_GUIDE.md)**
+
 ### Theme Hooks (4)
 
 ```tsx

@@ -593,9 +593,10 @@ const renderer = useMemo(() => ({
 
 ## ✨ Key Features
 
-- **23 Layer Components** - Complete layer support including FeatureLayer, TileLayer, SceneLayer, and more
-- **18 Widget Components** - Full widget library with declarative JSX components
+- **46 Components** - 23 layers + 18 widgets + 5 core components
+- **30+ Hooks** - Complete functionality including query, analysis, routing, and portal
 - **React-First Design** - All components follow React best practices with hooks, context, and TypeScript
+- **Advanced GIS Analysis** - 8 specialized hooks for queries, statistics, spatial operations, and routing
 - **Automatic Lifecycle Management** - No manual `destroy()` or cleanup needed
 - **Theme Support** - Built-in light/dark mode with auto system preference detection
 - **TypeScript** - Full type definitions included
@@ -605,6 +606,7 @@ const renderer = useMemo(() => ({
 
 - [Widget Library Guide](./WIDGET_LIBRARY.md) - Complete documentation for all 18 widget components
 - [Layer Library Guide](./LAYER_LIBRARY.md) - Complete documentation for all 23 layer components
+- [Analysis Hooks Guide](./ANALYSIS_HOOKS_GUIDE.md) - Query and analysis hooks for GIS operations
 - [WebMap/WebScene Guide](./WEBMAP_WEBSCENE_GUIDE.md) - Load maps from ArcGIS Online/Portal
 - [Layer Quick Reference](./LAYER_GUIDE_QUICK.md) - Quick reference and layer selection guide
 - [Theming Guide](./THEMING.md) - Theme system documentation
