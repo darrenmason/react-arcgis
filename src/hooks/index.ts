@@ -3,3 +3,8 @@ export { useSearch } from './useSearch';
 export { useBasemapGallery } from './useBasemapGallery';
 export { useSketchViewModel } from './useSketchViewModel';
 export { useView } from '../context/ViewContext';
+export { useEsriModule } from './useEsriModule';
+export { usePropertyUpdater } from './usePropertyUpdater';
+export { useEventHandlers } from './useEventHandlers';
+export { useLayer } from './useLayer';
+export { useEsriView } from './useView';

@@ -1,33 +1,41 @@
 import React, { useEffect, useRef, useState } from 'react';
 import type { BaseMapProps } from '../types';
 import type EsriMap from '@arcgis/core/Map';
+import { useEsriModule } from '../hooks/useEsriModule';
+import { usePropertyUpdater } from '../hooks/usePropertyUpdater';
 
-export const Map: React.FC<BaseMapProps> = ({
+export function Map({
   basemap = 'topo-vector',
   ground,
   layers,
   onLoad,
   children
-}) => {
+}: BaseMapProps) {
   const [map, setMap] = useState<EsriMap | null>(null);
   const mapRef = useRef<EsriMap | null>(null);
 
+  const { Module: MapModule } = useEsriModule<EsriMap>(
+    () => import('@arcgis/core/Map'),
+    'Map'
+  );
+
   useEffect(() => {
+    if (!MapModule) return;
+
     let mounted = true;
 
     const initializeMap = async () => {
       try {
-        const [Map] = await Promise.all([
-          import('@arcgis/core/Map')
-        ]);
-
-        if (!mounted) return;
-
-        const mapInstance = new Map.default({
+        const mapInstance = new MapModule({
           basemap,
           ground,
           layers: layers || []
         });
+
+        if (!mounted) {
+          mapInstance.destroy();
+          return;
+        }
 
         mapRef.current = mapInstance;
         setMap(mapInstance);
@@ -46,23 +54,14 @@ export const Map: React.FC<BaseMapProps> = ({
         mapRef.current = null;
       }
     };
-  }, []);
+  }, [MapModule]);
 
-  // Update basemap
-  useEffect(() => {
-    if (map) {
-      map.basemap = basemap as any;
-    }
-  }, [map, basemap]);
+  usePropertyUpdater(map, {
+    basemap: { value: basemap as any },
+    ground: { value: ground as any, condition: !!ground }
+  });
 
-  // Update ground
-  useEffect(() => {
-    if (map && ground) {
-      map.ground = ground as any;
-    }
-  }, [map, ground]);
-
-  // Update layers
+  // Update layers collection
   useEffect(() => {
     if (map && layers) {
       map.removeAll();
@@ -82,6 +81,6 @@ export const Map: React.FC<BaseMapProps> = ({
       })}
     </>
   );
-};
+}
 
 export default Map;

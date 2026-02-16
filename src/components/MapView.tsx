@@ -1,9 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import type { MapViewProps } from '../types';
 import type EsriMapView from '@arcgis/core/views/MapView';
 import { ViewProvider } from '../context/ViewContext';
+import { useEsriModule } from '../hooks/useEsriModule';
+import { useEsriView } from '../hooks/useView';
+import { usePropertyUpdater } from '../hooks/usePropertyUpdater';
+import { useEventHandlers } from '../hooks/useEventHandlers';
 
-export const MapView: React.FC<MapViewProps> = ({
+export function MapView({
   map,
   center,
   zoom = 10,
@@ -19,114 +23,52 @@ export const MapView: React.FC<MapViewProps> = ({
   className,
   style,
   children
-}) => {
+}: MapViewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const viewRef = useRef<EsriMapView | null>(null);
-  const [view, setView] = useState<EsriMapView | null>(null);
-  const [isReady, setIsReady] = useState(false);
 
+  const { Module: MapViewModule } = useEsriModule<EsriMapView>(
+    () => import('@arcgis/core/views/MapView'),
+    'MapView'
+  );
+
+  const { view, isReady } = useEsriView({
+    Module: MapViewModule,
+    container: containerRef.current,
+    config: {
+      map: map as any,
+      center: center as any,
+      zoom,
+      scale,
+      extent: extent as any,
+      rotation,
+      constraints: constraints as any
+    },
+    onLoad,
+    onViewReady
+  });
+
+  // Configure UI components
   useEffect(() => {
-    if (!containerRef.current || !map) return;
-
-    let mounted = true;
-
-    const initializeView = async () => {
-      try {
-        const [MapView] = await Promise.all([
-          import('@arcgis/core/views/MapView')
-        ]);
-
-        if (!mounted || !containerRef.current) return;
-
-        const viewInstance = new MapView.default({
-          container: containerRef.current,
-          map: map as any,
-          center: center as any,
-          zoom,
-          scale,
-          extent: extent as any,
-          rotation,
-          constraints: constraints as any
-        });
-
-        // Configure UI components
-        if (ui?.components) {
-          ui.components.forEach((component) => {
-            if (component.startsWith('-')) {
-              viewInstance.ui.remove(component.substring(1));
-            }
-          });
+    if (view && ui?.components) {
+      ui.components.forEach((component) => {
+        if (component.startsWith('-')) {
+          view.ui.remove(component.substring(1));
         }
-
-        viewRef.current = viewInstance;
-        setView(viewInstance);
-        onLoad?.(viewInstance);
-
-        // Wait for view to be ready
-        await viewInstance.when();
-        if (mounted) {
-          setIsReady(true);
-          onViewReady?.(viewInstance);
-        }
-      } catch (error) {
-        console.error('Error initializing MapView:', error);
-      }
-    };
-
-    initializeView();
-
-    return () => {
-      mounted = false;
-      if (viewRef.current) {
-        viewRef.current.destroy();
-        viewRef.current = null;
-      }
-    };
-  }, [map]);
-
-  // Update center
-  useEffect(() => {
-    if (view && center && isReady) {
-      view.center = center as any;
+      });
     }
-  }, [view, center, isReady]);
+  }, [view, ui]);
 
-  // Update zoom
-  useEffect(() => {
-    if (view && zoom !== undefined && isReady) {
-      view.zoom = zoom;
-    }
-  }, [view, zoom, isReady]);
+  usePropertyUpdater(view, {
+    center: { value: center as any, condition: isReady && !!center },
+    zoom: { value: zoom, condition: isReady && zoom !== undefined },
+    scale: { value: scale, condition: isReady && scale !== undefined },
+    rotation: { value: rotation, condition: isReady && rotation !== undefined }
+  });
 
-  // Update scale
-  useEffect(() => {
-    if (view && scale !== undefined && isReady) {
-      view.scale = scale;
-    }
-  }, [view, scale, isReady]);
-
-  // Update rotation
-  useEffect(() => {
-    if (view && rotation !== undefined && isReady) {
-      view.rotation = rotation;
-    }
-  }, [view, rotation, isReady]);
-
-  // Handle click events
-  useEffect(() => {
-    if (!view || !onClick) return;
-
-    const handle = view.on('click', onClick);
-    return () => handle.remove();
-  }, [view, onClick]);
-
-  // Handle pointer move events
-  useEffect(() => {
-    if (!view || !onPointerMove) return;
-
-    const handle = view.on('pointer-move', onPointerMove);
-    return () => handle.remove();
-  }, [view, onPointerMove]);
+  useEventHandlers(view, [
+    { eventName: 'click', handler: onClick },
+    { eventName: 'pointer-move', handler: onPointerMove }
+  ]);
 
   return (
     <div
@@ -145,6 +87,6 @@ export const MapView: React.FC<MapViewProps> = ({
       )}
     </div>
   );
-};
+}
 
 export default MapView;

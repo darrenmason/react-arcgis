@@ -22,7 +22,7 @@ import {
 import '@esri/calcite-components/dist/calcite/calcite.css';
 
 // Component to display map controls using Calcite
-const MapControls: React.FC = () => {
+function MapControls() {
   const { view, map } = useView();
   const [layerVisible, setLayerVisible] = useState(true);
   const [layerOpacity, setLayerOpacity] = useState(0.8);
@@ -119,9 +119,9 @@ const MapControls: React.FC = () => {
       </CalciteAlert>
     </>
   );
-};
+}
 
-const CalciteExample: React.FC = () => {
+function CalciteExample() {
   const [panelCollapsed, setPanelCollapsed] = useState(false);
   const [basemap, setBasemap] = useState('topo-vector');
 
@@ -203,6 +203,6 @@ const CalciteExample: React.FC = () => {
       </div>
     </CalciteShell>
   );
-};
+}
 
 export default CalciteExample;

@@ -1,9 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import type { SceneViewProps } from '../types';
 import type EsriSceneView from '@arcgis/core/views/SceneView';
 import { ViewProvider } from '../context/ViewContext';
+import { useEsriModule } from '../hooks/useEsriModule';
+import { useEsriView } from '../hooks/useView';
+import { usePropertyUpdater } from '../hooks/usePropertyUpdater';
+import { useEventHandlers } from '../hooks/useEventHandlers';
 
-export const SceneView: React.FC<SceneViewProps> = ({
+export function SceneView({
   map,
   center,
   zoom = 10,
@@ -16,75 +20,36 @@ export const SceneView: React.FC<SceneViewProps> = ({
   className,
   style,
   children
-}) => {
+}: SceneViewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const viewRef = useRef<EsriSceneView | null>(null);
-  const [view, setView] = useState<EsriSceneView | null>(null);
-  const [isReady, setIsReady] = useState(false);
 
-  useEffect(() => {
-    if (!containerRef.current || !map) return;
+  const { Module: SceneViewModule } = useEsriModule<EsriSceneView>(
+    () => import('@arcgis/core/views/SceneView'),
+    'SceneView'
+  );
 
-    let mounted = true;
+  const { view, isReady } = useEsriView({
+    Module: SceneViewModule,
+    container: containerRef.current,
+    config: {
+      map: map as any,
+      center: center as any,
+      zoom,
+      scale,
+      camera: camera as any,
+      viewingMode
+    },
+    onLoad,
+    onViewReady
+  });
 
-    const initializeView = async () => {
-      try {
-        const [SceneView] = await Promise.all([
-          import('@arcgis/core/views/SceneView')
-        ]);
+  usePropertyUpdater(view, {
+    camera: { value: camera as any, condition: isReady && !!camera }
+  });
 
-        if (!mounted || !containerRef.current) return;
-
-        const viewInstance = new SceneView.default({
-          container: containerRef.current,
-          map: map as any,
-          center: center as any,
-          zoom,
-          scale,
-          camera: camera as any,
-          viewingMode
-        });
-
-        viewRef.current = viewInstance;
-        setView(viewInstance);
-        onLoad?.(viewInstance);
-
-        // Wait for view to be ready
-        await viewInstance.when();
-        if (mounted) {
-          setIsReady(true);
-          onViewReady?.(viewInstance);
-        }
-      } catch (error) {
-        console.error('Error initializing SceneView:', error);
-      }
-    };
-
-    initializeView();
-
-    return () => {
-      mounted = false;
-      if (viewRef.current) {
-        viewRef.current.destroy();
-        viewRef.current = null;
-      }
-    };
-  }, [map]);
-
-  // Update camera
-  useEffect(() => {
-    if (view && camera && isReady) {
-      view.camera = camera as any;
-    }
-  }, [view, camera, isReady]);
-
-  // Handle click events
-  useEffect(() => {
-    if (!view || !onClick) return;
-
-    const handle = view.on('click', onClick);
-    return () => handle.remove();
-  }, [view, onClick]);
+  useEventHandlers(view, [
+    { eventName: 'click', handler: onClick }
+  ]);
 
   return (
     <div
@@ -103,6 +68,6 @@ export const SceneView: React.FC<SceneViewProps> = ({
       )}
     </div>
   );
-};
+}
 
 export default SceneView;

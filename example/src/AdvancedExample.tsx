@@ -10,7 +10,7 @@ import {
 } from 'react-arcgis';
 
 // Example of using hooks within a view context
-const MapWidgets: React.FC = () => {
+function MapWidgets() {
   const { view } = useView();
 
   // Add search widget
@@ -26,9 +26,9 @@ const MapWidgets: React.FC = () => {
   });
 
   return null;
-};
+}
 
-const AdvancedExample: React.FC = () => {
+function AdvancedExample() {
   const [zoom, setZoom] = useState(4);
   const [selectedState, setSelectedState] = useState<string | null>(null);
   const [filterPopulation, setFilterPopulation] = useState<number>(0);
@@ -163,6 +163,6 @@ const AdvancedExample: React.FC = () => {
       </div>
     </div>
   );
-};
+}
 
 export default AdvancedExample;

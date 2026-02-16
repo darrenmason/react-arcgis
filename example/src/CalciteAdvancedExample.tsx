@@ -36,7 +36,7 @@ import '@esri/calcite-components/dist/calcite/calcite.css';
 import type GraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
 
 // Panel for layer management
-const LayersPanel: React.FC<{ visible: boolean }> = ({ visible }) => {
+function LayersPanel({ visible }: { visible: boolean }) {
   const { map } = useView();
   const [layers, setLayers] = useState<any[]>([]);
 
@@ -78,13 +78,10 @@ const LayersPanel: React.FC<{ visible: boolean }> = ({ visible }) => {
       </CalciteList>
     </CalcitePanel>
   );
-};
+}
 
 // Panel for basemap selection
-const BasemapPanel: React.FC<{ visible: boolean; onBasemapChange: (basemap: string) => void }> = ({
-  visible,
-  onBasemapChange
-}) => {
+function BasemapPanel({ visible, onBasemapChange }: { visible: boolean; onBasemapChange: (basemap: string) => void }) {
   const [selectedBasemap, setSelectedBasemap] = useState('topo-vector');
 
   const basemaps = [
@@ -119,10 +116,10 @@ const BasemapPanel: React.FC<{ visible: boolean; onBasemapChange: (basemap: stri
       </CalciteList>
     </CalcitePanel>
   );
-};
+}
 
 // Drawing tools panel
-const DrawingPanel: React.FC<{ visible: boolean }> = ({ visible }) => {
+function DrawingPanel({ visible }: { visible: boolean }) {
   const { view } = useView();
   const [graphicsLayer, setGraphicsLayer] = useState<GraphicsLayer | null>(null);
   const [drawingActive, setDrawingActive] = useState(false);
@@ -231,10 +228,10 @@ const DrawingPanel: React.FC<{ visible: boolean }> = ({ visible }) => {
       {graphicsLayer && <GraphicsLayer graphics={graphicsLayer.graphics.toArray()} />}
     </CalcitePanel>
   );
-};
+}
 
 // Main application component
-const CalciteAdvancedExample: React.FC = () => {
+function CalciteAdvancedExample() {
   const [panelCollapsed, setPanelCollapsed] = useState(false);
   const [activePanel, setActivePanel] = useState<'layers' | 'basemaps' | 'draw'>('layers');
   const [basemap, setBasemap] = useState('topo-vector');
@@ -391,6 +388,6 @@ const CalciteAdvancedExample: React.FC = () => {
       </div>
     </CalciteShell>
   );
-};
+}
 
 export default CalciteAdvancedExample;

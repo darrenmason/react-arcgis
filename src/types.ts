@@ -27,11 +27,13 @@ export interface MapViewProps {
     components?: string[];
     position?: string;
   };
-  constraints?: __esri.MapViewConstraints;
+  constraints?: __esri.View2DConstraints;
   onLoad?: (view: MapView) => void;
   onViewReady?: (view: MapView) => void;
   onClick?: (event: __esri.ViewClickEvent) => void;
   onPointerMove?: (event: __esri.ViewPointerMoveEvent) => void;
+  className?: string;
+  style?: React.CSSProperties;
   children?: React.ReactNode;
 }
 
@@ -46,6 +48,8 @@ export interface SceneViewProps {
   onLoad?: (view: SceneView) => void;
   onViewReady?: (view: SceneView) => void;
   onClick?: (event: __esri.ViewClickEvent) => void;
+  className?: string;
+  style?: React.CSSProperties;
   children?: React.ReactNode;
 }
 
@@ -71,7 +75,7 @@ export interface FeatureLayerProps extends LayerProps {
 
 export interface GraphicsLayerProps extends LayerProps {
   graphics?: __esri.Graphic[];
-  elevationInfo?: __esri.GraphicsLayerElevationInfo;
+  elevationInfo?: any;
 }
 
 export interface ViewContext {

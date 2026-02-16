@@ -41,7 +41,7 @@ export const useSearch = ({
           sources: sources as any,
           includeDefaultSources,
           searchAllEnabled,
-          suggestionEnabled
+          suggestionsEnabled: suggestionEnabled
         });
 
         view.ui.add(searchWidget, position);

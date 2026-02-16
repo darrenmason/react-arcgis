@@ -1,9 +1,11 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import type { GraphicsLayerProps } from '../../types';
 import type EsriGraphicsLayer from '@arcgis/core/layers/GraphicsLayer';
-import { useView } from '../../context/ViewContext';
+import { useEsriModule } from '../../hooks/useEsriModule';
+import { useLayer } from '../../hooks/useLayer';
+import { usePropertyUpdater } from '../../hooks/usePropertyUpdater';
 
-export const GraphicsLayer: React.FC<GraphicsLayerProps> = ({
+export function GraphicsLayer({
   graphics = [],
   elevationInfo,
   visible = true,
@@ -11,77 +13,38 @@ export const GraphicsLayer: React.FC<GraphicsLayerProps> = ({
   map,
   view,
   onLoad
-}) => {
-  const layerRef = useRef<EsriGraphicsLayer | null>(null);
-  const contextView = useView();
-  const targetView = view || contextView.view;
-  const targetMap = map || contextView.map;
+}: GraphicsLayerProps) {
+  const { Module } = useEsriModule<EsriGraphicsLayer>(
+    () => import('@arcgis/core/layers/GraphicsLayer'),
+    'GraphicsLayer'
+  );
 
+  const layer = useLayer({
+    Module,
+    config: {
+      graphics,
+      elevationInfo,
+      visible,
+      opacity
+    },
+    map,
+    onLoad
+  });
+
+  usePropertyUpdater(layer, {
+    visible: { value: visible },
+    opacity: { value: opacity }
+  });
+
+  // Update graphics collection
   useEffect(() => {
-    let mounted = true;
-
-    const initializeLayer = async () => {
-      try {
-        const [GraphicsLayer] = await Promise.all([
-          import('@arcgis/core/layers/GraphicsLayer')
-        ]);
-
-        if (!mounted) return;
-
-        const layer = new GraphicsLayer.default({
-          graphics,
-          elevationInfo: elevationInfo as any,
-          visible,
-          opacity
-        });
-
-        layerRef.current = layer;
-
-        if (targetMap) {
-          targetMap.add(layer);
-        }
-
-        onLoad?.(layer);
-      } catch (error) {
-        console.error('Error initializing GraphicsLayer:', error);
-      }
-    };
-
-    initializeLayer();
-
-    return () => {
-      mounted = false;
-      if (layerRef.current && targetMap) {
-        targetMap.remove(layerRef.current);
-        layerRef.current.destroy();
-        layerRef.current = null;
-      }
-    };
-  }, []);
-
-  // Update graphics
-  useEffect(() => {
-    if (layerRef.current && graphics) {
-      layerRef.current.removeAll();
-      layerRef.current.addMany(graphics);
+    if (layer && graphics) {
+      layer.removeAll();
+      layer.addMany(graphics);
     }
-  }, [graphics]);
-
-  // Update visible
-  useEffect(() => {
-    if (layerRef.current) {
-      layerRef.current.visible = visible;
-    }
-  }, [visible]);
-
-  // Update opacity
-  useEffect(() => {
-    if (layerRef.current) {
-      layerRef.current.opacity = opacity;
-    }
-  }, [opacity]);
+  }, [layer, graphics]);
 
   return null;
-};
+}
 
 export default GraphicsLayer;

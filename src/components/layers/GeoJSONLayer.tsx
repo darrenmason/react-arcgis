@@ -1,7 +1,8 @@
-import { useEffect, useRef } from 'react';
 import type { LayerProps } from '../../types';
 import type EsriGeoJSONLayer from '@arcgis/core/layers/GeoJSONLayer';
-import { useView } from '../../context/ViewContext';
+import { useEsriModule } from '../../hooks/useEsriModule';
+import { useLayer } from '../../hooks/useLayer';
+import { usePropertyUpdater } from '../../hooks/usePropertyUpdater';
 
 export interface GeoJSONLayerProps extends LayerProps {
   url?: string;
@@ -10,7 +11,7 @@ export interface GeoJSONLayerProps extends LayerProps {
   popupTemplate?: __esri.PopupTemplateProperties;
 }
 
-export const GeoJSONLayer: React.FC<GeoJSONLayerProps> = ({
+export function GeoJSONLayer({
   url,
   copyright,
   renderer,
@@ -20,71 +21,32 @@ export const GeoJSONLayer: React.FC<GeoJSONLayerProps> = ({
   map,
   view,
   onLoad
-}) => {
-  const layerRef = useRef<EsriGeoJSONLayer | null>(null);
-  const contextView = useView();
-  const targetView = view || contextView.view;
-  const targetMap = map || contextView.map;
+}: GeoJSONLayerProps) {
+  const { Module } = useEsriModule<EsriGeoJSONLayer>(
+    () => import('@arcgis/core/layers/GeoJSONLayer'),
+    'GeoJSONLayer'
+  );
 
-  useEffect(() => {
-    let mounted = true;
+  const layer = useLayer({
+    Module,
+    config: {
+      url,
+      copyright,
+      renderer,
+      popupTemplate,
+      visible,
+      opacity
+    },
+    map,
+    onLoad
+  });
 
-    const initializeLayer = async () => {
-      try {
-        const [GeoJSONLayer] = await Promise.all([
-          import('@arcgis/core/layers/GeoJSONLayer')
-        ]);
-
-        if (!mounted) return;
-
-        const layer = new GeoJSONLayer.default({
-          url,
-          copyright,
-          renderer: renderer as any,
-          popupTemplate: popupTemplate as any,
-          visible,
-          opacity
-        });
-
-        layerRef.current = layer;
-
-        if (targetMap) {
-          targetMap.add(layer);
-        }
-
-        onLoad?.(layer);
-      } catch (error) {
-        console.error('Error initializing GeoJSONLayer:', error);
-      }
-    };
-
-    initializeLayer();
-
-    return () => {
-      mounted = false;
-      if (layerRef.current && targetMap) {
-        targetMap.remove(layerRef.current);
-        layerRef.current.destroy();
-        layerRef.current = null;
-      }
-    };
-  }, []);
-
-  // Update visible
-  useEffect(() => {
-    if (layerRef.current) {
-      layerRef.current.visible = visible;
-    }
-  }, [visible]);
-
-  // Update opacity
-  useEffect(() => {
-    if (layerRef.current) {
-      layerRef.current.opacity = opacity;
-    }
-  }, [opacity]);
+  usePropertyUpdater(layer, {
+    visible: { value: visible },
+    opacity: { value: opacity }
+  });
 
   return null;
-};
+}
 
 export default GeoJSONLayer;

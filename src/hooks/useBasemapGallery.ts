@@ -39,7 +39,7 @@ export const useBasemapGallery = ({
         const expand = new Expand.default({
           view: view as any,
           content: basemapGallery,
-          expandIconClass: 'esri-icon-basemap'
+          expandIcon: 'basemap'
         });
 
         view.ui.add(expand, position);
