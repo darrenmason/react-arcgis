@@ -56,6 +56,72 @@ function App() {
 }
 ```
 
+## Complete Example with Widgets
+
+```tsx
+import { useState } from 'react';
+import {
+  Map,
+  MapView,
+  FeatureLayer,
+  GraphicsLayer,
+  // Widgets
+  Zoom,
+  Home,
+  Search,
+  LayerList,
+  Legend,
+  ScaleBar,
+  BasemapToggle,
+  Sketch
+} from 'react-arcgis';
+
+function CompleteMap() {
+  const [graphicsLayer, setGraphicsLayer] = useState(null);
+  
+  return (
+    <Map basemap="topo-vector">
+      <MapView center={[-98.5795, 39.8283]} zoom={4}>
+        {/* Layers */}
+        <FeatureLayer
+          url="https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_States_Generalized/FeatureServer/0"
+          outFields={['*']}
+        />
+        
+        <GraphicsLayer onLoad={setGraphicsLayer} />
+        
+        {/* Navigation Widgets */}
+        <Zoom position="top-left" />
+        <Home position="top-left" />
+        
+        {/* Search & Information */}
+        <Search position="top-right" />
+        <LayerList position="top-right" />
+        <Legend position="bottom-right" />
+        <ScaleBar position="bottom-left" unit="dual" />
+        
+        {/* Basemap Control */}
+        <BasemapToggle position="bottom-left" nextBasemap="satellite" />
+        
+        {/* Drawing Tools */}
+        {graphicsLayer && (
+          <Sketch
+            layer={graphicsLayer}
+            position="top-right"
+            availableCreateTools={['point', 'polyline', 'polygon']}
+            onCreate={(event) => {
+              if (event.state === 'complete') {
+                console.log('Created:', event.graphic);
+              }
+            }}
+          />
+        )}
+      </MapView>
+    </Map>
+  );
+}
+```
+
 ## Core Components
 
 ### Map
@@ -524,6 +590,25 @@ const renderer = useMemo(() => ({
 ```
 
 6. **Use Calcite for UI**: Leverage Calcite components for consistent, professional UI that matches the ArcGIS aesthetic.
+
+## ✨ Key Features
+
+- **23 Layer Components** - Complete layer support including FeatureLayer, TileLayer, SceneLayer, and more
+- **18 Widget Components** - Full widget library with declarative JSX components
+- **React-First Design** - All components follow React best practices with hooks, context, and TypeScript
+- **Automatic Lifecycle Management** - No manual `destroy()` or cleanup needed
+- **Theme Support** - Built-in light/dark mode with auto system preference detection
+- **TypeScript** - Full type definitions included
+- **Modern Build** - ESM and CJS formats, tree-shakeable
+
+## 📚 Documentation
+
+- [Widget Library Guide](./WIDGET_LIBRARY.md) - Complete documentation for all 18 widget components
+- [Layer Library Guide](./LAYER_LIBRARY.md) - Complete documentation for all 23 layer components
+- [Layer Quick Reference](./LAYER_GUIDE_QUICK.md) - Quick reference and layer selection guide
+- [Theming Guide](./THEMING.md) - Theme system documentation
+- [What's New](./WHATS_NEW.md) - Latest features and improvements
+- [Complete Guide](./COMPLETE_GUIDE.md) - Master documentation for all features
 
 ## Contributing
 

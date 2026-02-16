@@ -62,6 +62,37 @@ function App() {
 <WebScene portalItem={{ id: "xyz789" }} />
 ```
 
+### Widget Components (18)
+
+Complete UI toolkit with declarative JSX components:
+
+**Navigation & View (6)**
+- Zoom, Home, Compass
+- Locate, Track, Fullscreen
+
+**Information (3)**
+- LayerList, Legend, ScaleBar
+
+**Search & Basemap (3)**
+- Search, BasemapGallery, BasemapToggle
+
+**Editing (2)**
+- Editor, Sketch
+
+**Data & Analysis (5)**
+- FeatureTable, TimeSlider, Measurement
+- HistogramRangeSlider, ElevationProfile
+
+**Advanced (4)**
+- Print, Directions, CoordinateConversion, Swipe
+
+**Utility (1)**
+- Expand
+
+👉 **[Widget Library Guide →](./WIDGET_LIBRARY.md)**
+
+---
+
 ### Layer Components (23)
 
 React ArcGIS provides complete layer coverage:

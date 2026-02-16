@@ -5,7 +5,7 @@ export { SceneView } from './components/SceneView';
 export { WebMap } from './components/WebMap';
 export { WebScene } from './components/WebScene';
 
-// Layer Components
+// Layer Components (23 total)
 export {
   // Vector & Feature Layers
   FeatureLayer,
@@ -42,6 +42,49 @@ export {
   GroupLayer,
   SubtypeGroupLayer
 } from './components/layers';
+
+// Widget Components (18 total)
+export {
+  // Navigation & View Control
+  Zoom,
+  Home,
+  Compass,
+  Locate,
+  Track,
+  Fullscreen,
+  
+  // Information & Display
+  LayerList,
+  Legend,
+  ScaleBar,
+  
+  // Search & Location
+  Search,
+  
+  // Basemap Control
+  BasemapGallery,
+  BasemapToggle,
+  
+  // Editing & Drawing
+  Editor,
+  Sketch,
+  
+  // Data & Analysis
+  FeatureTable,
+  TimeSlider,
+  Measurement,
+  HistogramRangeSlider,
+  ElevationProfile,
+  
+  // Advanced Tools
+  Print,
+  Directions,
+  CoordinateConversion,
+  Swipe,
+  
+  // Utility
+  Expand
+} from './components/widgets';
 
 // All Hooks
 export {

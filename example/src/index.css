@@ -38,6 +38,34 @@ html, body, #root {
   opacity: 0.9;
 }
 
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.tabs button {
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.tabs button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.tabs button.active {
+  background: white;
+  color: #2c3e50;
+  border-color: white;
+  font-weight: 600;
+}
+
 .map-container {
   flex: 1;
   position: relative;

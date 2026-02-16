@@ -1,12 +1,67 @@
 # What's New in React ArcGIS
 
-## Latest Release - 100% Essential API Coverage
+## Latest Release - Complete Widget & Layer Library
 
-### 🎉 Major Milestone: Complete React-Native API
+### 🎉 Major Milestone: Full UI Toolkit
 
-React ArcGIS now provides **100% coverage of essential ArcGIS Maps SDK functionality** with React-native patterns!
+React ArcGIS now provides **18 widget components** and **23 layer components** for complete ArcGIS Maps SDK functionality in React!
 
 ## New Features
+
+### 🎛️ 18 Widget Components
+
+Complete UI toolkit with declarative JSX components:
+
+```tsx
+import {
+  // Navigation & View
+  Zoom, Home, Compass, Locate, Track, Fullscreen,
+  // Information
+  LayerList, Legend, ScaleBar,
+  // Search & Basemap
+  Search, BasemapGallery, BasemapToggle,
+  // Editing
+  Editor, Sketch,
+  // Analysis
+  FeatureTable, TimeSlider, Measurement, 
+  HistogramRangeSlider, ElevationProfile,
+  // Advanced
+  Print, Directions, CoordinateConversion, Swipe,
+  // Utility
+  Expand
+} from 'react-arcgis';
+
+// Complete map with widgets
+<MapView>
+  <FeatureLayer url="..." />
+  <GraphicsLayer onLoad={setLayer} />
+  
+  {/* Navigation */}
+  <Zoom position="top-left" />
+  <Home position="top-left" />
+  <Search position="top-right" />
+  
+  {/* Information */}
+  <LayerList position="top-right" />
+  <Legend position="bottom-right" />
+  <ScaleBar position="bottom-left" />
+  
+  {/* Editing */}
+  <Sketch layer={graphicsLayer} position="top-right" />
+  
+  {/* Analysis */}
+  <Measurement position="top-right" activeTool="distance" />
+</MapView>
+```
+
+**All widgets include:**
+- ✅ Declarative JSX API
+- ✅ Automatic lifecycle management
+- ✅ Event callbacks (onCreate, onUpdate, etc.)
+- ✅ TypeScript definitions
+- ✅ Position control
+
+**See [Widget Library Guide](./WIDGET_LIBRARY.md) for complete documentation.**
 
 ### 📦 7 New Layer Components
 
