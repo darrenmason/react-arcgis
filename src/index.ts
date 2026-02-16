@@ -108,6 +108,12 @@ export {
   
   // Portal and web maps
   usePortal,
+  usePortalItem,
+  usePortalSearch,
+  usePortalGroup,
+  usePortalUser,
+  usePortalContent,
+  useOAuthInfo,
   useWebMap,
   useWebScene,
   

@@ -207,15 +207,76 @@ useWatchUtils(view, 'zoom', (newZoom) => {
 });
 ```
 
-### Portal & Data Hooks (3)
+### Portal & Data Hooks (9)
+
+Complete Portal integration with authentication, search, and content management:
 
 ```tsx
-import { usePortal, useWebMap, useWebScene } from 'react-arcgis';
+import {
+  // Core Portal
+  usePortal,
+  useOAuthInfo,
+  // Content Discovery
+  usePortalItem,
+  usePortalSearch,
+  usePortalGroup,
+  usePortalUser,
+  // Content Management
+  usePortalContent,
+  // Web Maps/Scenes
+  useWebMap,
+  useWebScene
+} from 'react-arcgis';
 
 // Connect to Portal
 const { portal, user, signIn, signOut } = usePortal({
   url: 'https://www.arcgis.com'
 });
+
+// OAuth authentication
+const { credential, checkSignInStatus, signIn, signOut } = useOAuthInfo({
+  appId: 'YOUR_APP_ID'
+});
+
+// Search portal content
+const { search, results, loadMore, hasMore } = usePortalSearch(portal);
+await search({
+  query: 'type:"Web Map" AND access:public',
+  sortField: 'modified',
+  sortOrder: 'desc',
+  num: 20
+});
+
+// Load portal item
+const { item, loading, updateItem } = usePortalItem({
+  id: 'item-id',
+  portal
+});
+
+// Work with groups
+const { group, queryItems, items } = usePortalGroup({
+  id: 'group-id',
+  portal
+});
+
+// User profiles
+const { user, fetchContent, content } = usePortalUser({
+  username: 'johndoe',
+  portal
+});
+
+// Manage content (add, update, delete)
+const { addItem, updateItem, deleteItem, shareItem } = usePortalContent(portal);
+
+const newItem = await addItem({
+  type: 'Web Map',
+  title: 'My New Map',
+  tags: ['map', 'custom'],
+  data: { baseMap: {}, operationalLayers: [] },
+  access: 'private'
+});
+
+await shareItem(newItem.id, { everyone: true });
 
 // Load WebMap (2D)
 const { webMap, loading, error } = useWebMap({
@@ -228,6 +289,7 @@ const { webScene, loading, error } = useWebScene({
 });
 ```
 
+👉 **[Portal Integration Guide →](./PORTAL_INTEGRATION_GUIDE.md)**
 👉 **[WebMap/WebScene Guide →](./WEBMAP_WEBSCENE_GUIDE.md)**
 
 ---

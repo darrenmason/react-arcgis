@@ -193,6 +193,81 @@ const nearest = await findClosestFacility({
 
 **See [Analysis Hooks Guide](./ANALYSIS_HOOKS_GUIDE.md) for complete documentation.**
 
+### 🌐 6 Portal Integration Hooks
+
+Complete Portal integration for ArcGIS Online and Enterprise:
+
+```tsx
+import {
+  usePortalItem,      // Load portal items
+  usePortalSearch,    // Search portal content
+  usePortalGroup,     // Work with groups
+  usePortalUser,      // User profiles
+  usePortalContent,   // Manage content (CRUD)
+  useOAuthInfo        // OAuth authentication
+} from 'react-arcgis';
+
+// OAuth authentication
+const { credential, signIn, signOut, checkSignInStatus } = useOAuthInfo({
+  appId: 'YOUR_APP_ID',
+  portalUrl: 'https://www.arcgis.com/sharing'
+});
+
+// Search portal
+const { search, results, loadMore, hasMore } = usePortalSearch(portal);
+await search({
+  query: 'type:"Web Map" AND access:public',
+  sortField: 'numViews',
+  sortOrder: 'desc'
+});
+
+// Load item
+const { item, loading, updateItem } = usePortalItem({
+  id: 'item-id',
+  portal
+});
+
+// User profile and content
+const { user, fetchContent, content } = usePortalUser({
+  username: 'johndoe',
+  portal
+});
+
+// Group management
+const { group, queryItems, items } = usePortalGroup({
+  id: 'group-id',
+  portal
+});
+
+// Content management
+const { addItem, updateItem, deleteItem, shareItem } = usePortalContent(portal);
+
+const item = await addItem({
+  type: 'Web Map',
+  title: 'My New Map',
+  tags: ['map'],
+  data: { baseMap: {}, operationalLayers: [] },
+  access: 'private'
+});
+
+await shareItem(item.id, { everyone: true });
+```
+
+**Features:**
+- ✅ OAuth 2.0 authentication
+- ✅ Portal content search
+- ✅ Item management (CRUD operations)
+- ✅ Group management
+- ✅ User profiles and content
+- ✅ Content sharing (public, org, groups)
+- ✅ Advanced search queries
+- ✅ Pagination support
+- ✅ Full TypeScript support
+
+**Total Portal Hooks: 9** (6 new + 3 existing)
+
+**See [Portal Integration Guide](./PORTAL_INTEGRATION_GUIDE.md) for complete documentation.**
+
 ### 📦 7 New Layer Components
 
 ```tsx

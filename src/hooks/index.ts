@@ -18,6 +18,12 @@ export { useGeocoding } from './useGeocoding';
 
 // Portal and web maps
 export { usePortal } from './usePortal';
+export { usePortalItem } from './usePortalItem';
+export { usePortalSearch } from './usePortalSearch';
+export { usePortalGroup } from './usePortalGroup';
+export { usePortalUser } from './usePortalUser';
+export { usePortalContent } from './usePortalContent';
+export { useOAuthInfo } from './useOAuthInfo';
 export { useWebMap } from './useWebMap';
 export { useWebScene } from './useWebScene';
 

@@ -4,8 +4,9 @@ import { WidgetLibraryExample } from './WidgetLibraryExample';
 import { LayerLibraryExample } from './LayerLibraryExample';
 import { WebMapWebSceneExample } from './WebMapWebSceneExample';
 import { AnalysisExample } from './AnalysisExample';
+import { PortalExample } from './PortalExample';
 
-type ExampleTab = 'basic' | 'widgets' | 'layers' | 'webmap' | 'analysis';
+type ExampleTab = 'basic' | 'widgets' | 'layers' | 'webmap' | 'analysis' | 'portal';
 
 function App() {
   const [activeTab, setActiveTab] = useState<ExampleTab>('basic');
@@ -26,6 +27,8 @@ function App() {
         return <WebMapWebSceneExample />;
       case 'analysis':
         return <AnalysisExample />;
+      case 'portal':
+        return <PortalExample />;
       case 'basic':
       default:
         return (
@@ -138,6 +141,12 @@ function App() {
             onClick={() => setActiveTab('analysis')}
           >
             Analysis Hooks
+          </button>
+          <button
+            className={activeTab === 'portal' ? 'active' : ''}
+            onClick={() => setActiveTab('portal')}
+          >
+            Portal Integration
           </button>
         </nav>
       </header>
