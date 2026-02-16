@@ -1,629 +1,254 @@
 # React ArcGIS
 
-A React-friendly wrapper library for the ArcGIS SDK for JavaScript, providing declarative components with proper lifecycle management, JSX rendering, and props-based configuration.
+Modern React components and hooks for building ArcGIS Maps SDK applications.
+
+[![npm version](https://img.shields.io/npm/v/react-arcgis.svg)](https://www.npmjs.com/package/react-arcgis)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## Features
 
-- 🎯 **React-First Design**: Components follow React patterns with proper lifecycle management
-- 🔄 **Declarative API**: Configure maps and layers using JSX and props
-- 🎣 **Custom Hooks**: Reusable hooks for common ArcGIS operations
-- 🌓 **Theme Support**: Built-in light/dark mode with auto system preference support
-- 📦 **TypeScript Support**: Full TypeScript definitions included
-- 🌍 **Comprehensive Components**: Map, MapView, SceneView, and various layer types
-- 🔌 **Context API Integration**: Share view and map instances across components
-- 🎨 **Calcite Design System**: Full integration with Esri's Calcite web components
-
-## Installation
-
-```bash
-npm install react-arcgis @arcgis/core
-```
-
-Don't forget to include the Calcite CSS if using Calcite components:
-
-```tsx
-// Calcite CSS (when using Calcite components)
-import '@esri/calcite-components/dist/calcite/calcite.css';
-```
-
-**Note:** The ArcGIS theme CSS is automatically managed by the `useTheme` or `useArcGISTheme` hooks. See [Theme Support](#theme-support) below.
+- 🗺️ **46 Components** - Complete component library (5 core + 18 widgets + 23 layers)
+- 🎣 **36+ Hooks** - Full React hooks API for all ArcGIS functionality
+- 🎨 **Theme Support** - Built-in light/dark mode with system preference detection
+- 🌐 **Portal Integration** - Complete ArcGIS Online/Enterprise support with 9 specialized hooks
+- 📊 **GIS Analysis** - 10 analysis hooks for queries, statistics, spatial ops, and routing
+- 🔐 **Authentication** - OAuth 2.0 and Portal authentication
+- 📱 **Responsive** - Mobile-friendly and responsive design
+- 🎯 **TypeScript** - Full type definitions included
+- 🚀 **Modern Build** - ESM and CJS formats, tree-shakeable
 
 ## Quick Start
 
+### Installation
+
+```bash
+npm install react-arcgis @arcgis/core @esri/calcite-components-react
+```
+
+### Basic Map
+
 ```tsx
-import React from 'react';
-import { Map, MapView, FeatureLayer } from 'react-arcgis';
-import '@arcgis/core/assets/esri/themes/light/main.css';
+import { Map, MapView, FeatureLayer, Zoom, Search } from 'react-arcgis';
 
 function App() {
   return (
-    <div style={{ height: '100vh' }}>
-      <Map basemap="topo-vector">
-        <MapView
-          center={[-118.805, 34.027]}
-          zoom={13}
-          onClick={(event) => console.log('Clicked:', event.mapPoint)}
-        >
-          <FeatureLayer
-            url="https://services.arcgis.com/V6ZHFr6zdgNZuVG0/arcgis/rest/services/Landscape_Trees/FeatureServer/0"
-            visible={true}
-            opacity={0.8}
-          />
-        </MapView>
-      </Map>
-    </div>
-  );
-}
-```
-
-## Complete Example with Widgets
-
-```tsx
-import { useState } from 'react';
-import {
-  Map,
-  MapView,
-  FeatureLayer,
-  GraphicsLayer,
-  // Widgets
-  Zoom,
-  Home,
-  Search,
-  LayerList,
-  Legend,
-  ScaleBar,
-  BasemapToggle,
-  Sketch
-} from 'react-arcgis';
-
-function CompleteMap() {
-  const [graphicsLayer, setGraphicsLayer] = useState(null);
-  
-  return (
     <Map basemap="topo-vector">
-      <MapView center={[-98.5795, 39.8283]} zoom={4}>
-        {/* Layers */}
-        <FeatureLayer
-          url="https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_States_Generalized/FeatureServer/0"
-          outFields={['*']}
-        />
-        
-        <GraphicsLayer onLoad={setGraphicsLayer} />
-        
-        {/* Navigation Widgets */}
+      <MapView center={[-118.805, 34.027]} zoom={13}>
+        <FeatureLayer url="https://services3.arcgis.com/.../FeatureServer/0" />
         <Zoom position="top-left" />
-        <Home position="top-left" />
-        
-        {/* Search & Information */}
         <Search position="top-right" />
-        <LayerList position="top-right" />
-        <Legend position="bottom-right" />
-        <ScaleBar position="bottom-left" unit="dual" />
-        
-        {/* Basemap Control */}
-        <BasemapToggle position="bottom-left" nextBasemap="satellite" />
-        
-        {/* Drawing Tools */}
-        {graphicsLayer && (
-          <Sketch
-            layer={graphicsLayer}
-            position="top-right"
-            availableCreateTools={['point', 'polyline', 'polygon']}
-            onCreate={(event) => {
-              if (event.state === 'complete') {
-                console.log('Created:', event.graphic);
-              }
-            }}
-          />
-        )}
       </MapView>
     </Map>
   );
 }
 ```
 
-## Core Components
+## Documentation
 
-### Map
+**📚 [Complete Documentation →](./docs/README.md)**
 
-The `Map` component creates an ArcGIS Map instance and manages its lifecycle.
+### Quick Links
 
-```tsx
-<Map
-  basemap="streets-vector"
-  layers={[layer1, layer2]}
-  onLoad={(map) => console.log('Map loaded:', map)}
->
-  {/* Child components */}
-</Map>
-```
+- **[Getting Started](./docs/guides/getting-started.md)** - Installation and setup
+- **[Quick Reference](./docs/guides/quick-reference.md)** - Common patterns
+- **[API Reference](./docs/api/)** - Complete API documentation
 
-**Props:**
-- `basemap`: string | Basemap - Map basemap
-- `ground`: Ground - Ground surface configuration
-- `layers`: Layer[] - Initial layers
-- `onLoad`: (map: Map) => void - Callback when map loads
+### Guides
 
-### MapView
+#### Components
+- [Map & View Components](./docs/guides/map-and-views.md) - Map, MapView, SceneView
+- [Layer Components](./docs/guides/layers.md) - All 23 layer types
+- [Widget Components](./docs/guides/widgets.md) - All 18 widgets
+- [WebMap & WebScene](./docs/guides/webmap-webscene.md) - Portal content loading
 
-The `MapView` component creates a 2D map view.
+#### Hooks
+- [Widget Hooks](./docs/guides/widget-hooks.md) - Widget integration
+- [Analysis Hooks](./docs/guides/analysis-hooks.md) - Query and analysis
+- [Portal Hooks](./docs/guides/portal-integration.md) - Portal integration
+- [Theme Hooks](./docs/guides/theming.md) - Theme management
 
-```tsx
-<MapView
-  center={[-118.805, 34.027]}
-  zoom={13}
-  rotation={45}
-  onClick={(event) => console.log(event)}
-  onViewReady={(view) => console.log('View ready:', view)}
->
-  {/* Layer components */}
-</MapView>
-```
+#### Features
+- [Authentication](./docs/guides/authentication.md) - OAuth and Portal auth
+- [Portal Integration](./docs/guides/portal-integration.md) - ArcGIS Online/Enterprise
+- [Theming](./docs/guides/theming.md) - Light/dark modes
+- [Best Practices](./docs/guides/best-practices.md) - Recommended patterns
 
-**Props:**
-- `center`: [number, number] | Point - View center
-- `zoom`: number - Zoom level (0-23)
-- `scale`: number - Map scale
-- `extent`: Extent - View extent
-- `rotation`: number - View rotation in degrees
-- `constraints`: MapViewConstraints - View constraints
-- `onClick`: (event) => void - Click event handler
-- `onPointerMove`: (event) => void - Pointer move handler
-- `onLoad`: (view: MapView) => void - Load callback
-- `onViewReady`: (view: MapView) => void - Ready callback
+## What's Included
 
-### SceneView
+### Components (46)
 
-The `SceneView` component creates a 3D scene view.
+**Core (5)**
+- Map, MapView, SceneView, WebMap, WebScene
 
-```tsx
-<SceneView
-  center={[-118.805, 34.027]}
-  zoom={13}
-  camera={{
-    position: { x: -118.805, y: 34.027, z: 1000 },
-    tilt: 65
-  }}
-  viewingMode="global"
->
-  {/* Layer components */}
-</SceneView>
-```
+**Widgets (18)**
+- Navigation: Zoom, Home, Compass, Locate, Track, Fullscreen
+- Information: LayerList, Legend, ScaleBar, Search
+- Basemap: BasemapGallery, BasemapToggle
+- Editing: Editor, Sketch
+- Analysis: FeatureTable, TimeSlider, Measurement, HistogramRangeSlider, ElevationProfile
+- Advanced: Print, Directions, CoordinateConversion, Swipe
+- Utility: Expand
 
-**Props:**
-- `center`: [number, number] | Point - View center
-- `zoom`: number - Zoom level
-- `camera`: Camera - Camera configuration
-- `viewingMode`: 'global' | 'local' - Viewing mode
-- `onClick`: (event) => void - Click event handler
-- `onLoad`: (view: SceneView) => void - Load callback
-- `onViewReady`: (view: SceneView) => void - Ready callback
+**Layers (23)**
+- Vector: FeatureLayer, GraphicsLayer, GeoJSONLayer, CSVLayer, StreamLayer
+- Tile: TileLayer, VectorTileLayer, WebTileLayer, ImageryTileLayer
+- Dynamic: MapImageLayer, ImageryLayer
+- 3D: SceneLayer, BuildingSceneLayer, IntegratedMeshLayer, PointCloudLayer, ElevationLayer
+- OGC: WMSLayer, WMTSLayer, WFSLayer, OGCFeatureLayer, KMLLayer
+- Organization: GroupLayer, SubtypeGroupLayer
 
-## Layer Components (23 Total)
+### Hooks (36+)
 
-React ArcGIS includes **23 layer components** covering every ArcGIS Maps SDK layer type:
+**Widget Hooks (10)**
+- useSearch, useLayerList, useLegend, useBasemapGallery, useBasemapToggle, useScaleBar, useSketchViewModel, usePopup, and more
 
-- **Vector & Features (5):** FeatureLayer, GraphicsLayer, GeoJSONLayer, CSVLayer, StreamLayer
-- **Tile Services (4):** TileLayer, VectorTileLayer, WebTileLayer, ImageryTileLayer
-- **Dynamic & Imagery (2):** MapImageLayer, ImageryLayer
-- **3D Layers (5):** SceneLayer, BuildingSceneLayer, IntegratedMeshLayer, PointCloudLayer, ElevationLayer
-- **OGC Standards (5):** WMSLayer, WMTSLayer, WFSLayer, OGCFeatureLayer, KMLLayer
-- **Organization (2):** GroupLayer, SubtypeGroupLayer
+**Analysis Hooks (10)**
+- useQuery, useQueryFeatures, useStatistics, useSpatialQuery, useIdentify, useBufferAnalysis, useGeometryMeasurement, useRouteAnalysis, useClosestFacility, useGeocoding
 
-📚 **[Complete Layer Documentation →](./LAYER_LIBRARY.md)**
-📋 **[Quick Reference Guide →](./LAYER_GUIDE_QUICK.md)**
+**Portal Hooks (9)**
+- usePortal, useOAuthInfo, usePortalItem, usePortalSearch, usePortalGroup, usePortalUser, usePortalContent, useWebMap, useWebScene
 
-### FeatureLayer
+**Theme Hooks (5)**
+- useTheme, useSystemTheme, useCalciteMode, useArcGISTheme, getSystemTheme
+
+**Utility Hooks (7+)**
+- useView, useGraphic, useWatchUtils, useWatchWhen, useEsriModule, usePropertyUpdater, useEventHandlers
+
+## Examples
+
+### Portal Integration
 
 ```tsx
-<FeatureLayer
-  url="https://services.arcgis.com/.../FeatureServer/0"
-  visible={true}
-  opacity={0.8}
-  definitionExpression="STATE_NAME = 'California'"
-  renderer={{
-    type: 'simple',
-    symbol: {
-      type: 'simple-fill',
-      color: [51, 51, 204, 0.9]
-    }
-  }}
-  popupTemplate={{
-    title: '{NAME}',
-    content: '{DESCRIPTION}'
-  }}
-  onLoad={(layer) => console.log('Layer loaded:', layer)}
-/>
-```
+import { usePortal, usePortalSearch, useOAuthInfo } from 'react-arcgis';
 
-**Props:**
-- `url`: string - Feature service URL
-- `portalItem`: PortalItem - Portal item reference
-- `visible`: boolean - Layer visibility
-- `opacity`: number - Layer opacity (0-1)
-- `renderer`: Renderer - Feature renderer
-- `popupTemplate`: PopupTemplate - Popup configuration
-- `definitionExpression`: string - SQL where clause
-- `outFields`: string[] - Fields to query
-- `onLoad`: (layer) => void - Load callback
-
-### GraphicsLayer
-
-```tsx
-<GraphicsLayer
-  graphics={graphicsArray}
-  visible={true}
-  opacity={1}
-  onLoad={(layer) => console.log('Graphics layer loaded:', layer)}
-/>
-```
-
-**Props:**
-- `graphics`: Graphic[] - Array of graphics
-- `visible`: boolean - Layer visibility
-- `opacity`: number - Layer opacity (0-1)
-- `elevationInfo`: ElevationInfo - Elevation settings
-- `onLoad`: (layer) => void - Load callback
-
-### GeoJSONLayer
-
-```tsx
-<GeoJSONLayer
-  url="https://example.com/data.geojson"
-  renderer={{
-    type: 'simple',
-    symbol: {
-      type: 'simple-marker',
-      color: 'orange',
-      size: 8
-    }
-  }}
-/>
-```
-
-## Custom Hooks
-
-### useView
-
-Access the current view and map from any child component.
-
-```tsx
-import { useView } from 'react-arcgis';
-
-function MyComponent() {
-  const { view, map } = useView();
-  
-  useEffect(() => {
-    if (view) {
-      console.log('Current zoom:', view.zoom);
-    }
-  }, [view]);
-  
-  return <div>Zoom: {view?.zoom}</div>;
-}
-```
-
-### useSearch
-
-Add a search widget to your view.
-
-```tsx
-import { useSearch } from 'react-arcgis';
-
-function SearchWidget() {
-  const { view } = useView();
-  const { search, loading } = useSearch({
-    view,
-    position: 'top-right',
-    searchAllEnabled: true,
-    suggestionEnabled: true
+function PortalApp() {
+  const { credential, signIn, signOut } = useOAuthInfo({
+    appId: 'YOUR_APP_ID'
   });
   
-  return loading ? <div>Loading search...</div> : null;
-}
-```
-
-### useBasemapGallery
-
-Add a basemap gallery widget.
-
-```tsx
-import { useBasemapGallery } from 'react-arcgis';
-
-function BasemapSelector() {
-  const { view } = useView();
-  const { gallery, loading } = useBasemapGallery({
-    view,
-    position: 'top-right'
-  });
+  const { portal, user } = usePortal();
+  const { search, results } = usePortalSearch(portal);
   
-  return null; // Widget is added to the view UI
-}
-```
-
-### useSketchViewModel
-
-Enable drawing and editing graphics.
-
-```tsx
-import { useSketchViewModel } from 'react-arcgis';
-
-function DrawingTools() {
-  const { view } = useView();
-  const [graphicsLayer, setGraphicsLayer] = useState(null);
-  
-  const { sketchVM, create, cancel } = useSketchViewModel({
-    view,
-    layer: graphicsLayer,
-    onCreateComplete: (event) => {
-      console.log('Graphic created:', event.graphic);
-    }
-  });
+  const searchMaps = async () => {
+    await search({
+      query: 'type:"Web Map" AND access:public',
+      sortField: 'numViews',
+      sortOrder: 'desc'
+    });
+  };
   
   return (
     <div>
-      <button onClick={() => create('point')}>Draw Point</button>
-      <button onClick={() => create('polyline')}>Draw Line</button>
-      <button onClick={() => create('polygon')}>Draw Polygon</button>
-      <button onClick={cancel}>Cancel</button>
+      {credential ? (
+        <>
+          <p>Welcome, {user?.username}</p>
+          <button onClick={searchMaps}>Search Maps</button>
+          <button onClick={signOut}>Sign Out</button>
+        </>
+      ) : (
+        <button onClick={signIn}>Sign In</button>
+      )}
     </div>
   );
 }
 ```
 
-### useGraphic
-
-Create graphics programmatically.
+### GIS Analysis
 
 ```tsx
-import { useGraphic } from 'react-arcgis';
+import { useQueryFeatures, useBufferAnalysis } from 'react-arcgis';
 
-function MyGraphic() {
-  const { graphic, loading } = useGraphic({
-    geometry: {
-      type: 'point',
-      longitude: -118.805,
-      latitude: 34.027
-    },
-    symbol: {
-      type: 'simple-marker',
-      color: 'red',
-      size: 12
-    },
-    attributes: {
-      name: 'My Point'
-    }
-  });
+function Analysis() {
+  const { query } = useQueryFeatures(featureLayer);
+  const { buffer } = useBufferAnalysis();
   
-  return loading ? null : <GraphicsLayer graphics={[graphic]} />;
+  const analyze = async (point) => {
+    // Create 10-mile buffer
+    const buffered = await buffer(point, {
+      distance: 10,
+      unit: 'miles',
+      geodesic: true
+    });
+    
+    // Find features within buffer
+    const features = await query({
+      geometry: buffered,
+      where: "TYPE = 'City'",
+      outFields: ['*']
+    });
+    
+    console.log(`Found ${features.length} cities`);
+  };
+  
+  return <button onClick={() => analyze(clickPoint)}>Analyze</button>;
 }
 ```
 
-## Advanced Examples
-
-### Multiple Layers with State Management
+### Theme Management
 
 ```tsx
-function AdvancedMap() {
-  const [layers, setLayers] = useState([]);
-  const [selectedFeatures, setSelectedFeatures] = useState([]);
-  
-  return (
-    <Map basemap="gray-vector">
-      <MapView
-        center={[-98.5795, 39.8283]}
-        zoom={4}
-        onClick={async (event) => {
-          const response = await view.hitTest(event);
-          if (response.results.length > 0) {
-            setSelectedFeatures(response.results);
-          }
-        }}
-      >
-        <FeatureLayer
-          url="https://services.arcgis.com/.../FeatureServer/0"
-          definitionExpression="POP2010 > 1000000"
-          renderer={{
-            type: 'simple',
-            symbol: {
-              type: 'simple-fill',
-              color: [51, 51, 204, 0.5],
-              outline: {
-                color: 'white',
-                width: 1
-              }
-            }
-          }}
-        />
-        
-        <GraphicsLayer graphics={selectedFeatures} />
-      </MapView>
-    </Map>
-  );
-}
-```
-
-### 3D Scene with Custom Camera
-
-```tsx
-function Scene3D() {
-  const [camera, setCamera] = useState({
-    position: { x: -118.805, y: 34.027, z: 5000 },
-    heading: 0,
-    tilt: 65
-  });
-  
-  return (
-    <Map basemap="satellite" ground="world-elevation">
-      <SceneView
-        camera={camera}
-        viewingMode="global"
-        onViewReady={(view) => {
-          // Animate camera
-          view.goTo({
-            target: [-118.805, 34.027],
-            zoom: 13,
-            tilt: 80
-          }, {
-            duration: 3000
-          });
-        }}
-      >
-        <FeatureLayer
-          url="https://services.arcgis.com/.../FeatureServer/0"
-          elevationInfo={{
-            mode: 'relative-to-ground',
-            offset: 100
-          }}
-        />
-      </SceneView>
-    </Map>
-  );
-}
-```
-
-## TypeScript Support
-
-All components and hooks are fully typed. Import types from the package:
-
-```tsx
-import type {
-  MapViewProps,
-  SceneViewProps,
-  FeatureLayerProps,
-  ViewType,
-  ViewContext
-} from 'react-arcgis';
-```
-
-## Theme Support
-
-React ArcGIS provides built-in theme support for both Calcite components and ArcGIS maps with light mode, dark mode, and automatic system preference detection.
-
-### Quick Example
-
-```tsx
-import { useState } from 'react';
-import { Map, MapView, useTheme, CalciteButton } from 'react-arcgis';
+import { useTheme } from 'react-arcgis';
 
 function App() {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
-  useTheme(theme);  // Single hook manages both Calcite and ArcGIS themes
-
+  const [theme, setTheme] = useState('auto');
+  useTheme(theme); // 'light', 'dark', or 'auto'
+  
   return (
-    <>
-      <CalciteButton onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>
-        Toggle Theme
-      </CalciteButton>
-      <Map basemap="topo-vector">
-        <MapView center={[-118.805, 34.027]} zoom={13} />
-      </Map>
-    </>
-  );
-}
-```
-
-**Available Hooks:**
-- `useTheme(mode)` - Manages both Calcite and ArcGIS themes (recommended)
-- `useCalciteMode(mode)` - Controls only Calcite components
-- `useArcGISTheme(theme)` - Controls only ArcGIS maps/widgets
-- `useSystemTheme()` - Returns current system preference
-
-**Theme Modes:** `'light'`, `'dark'`, `'auto'` (follows system preference)
-
-**Learn More:**
-- [Quick Start Guide](./THEME_QUICK_START.md)
-- [Complete Theming Guide](./THEMING.md)
-- [Theme Example](./example/src/ThemeExample.tsx)
-
-## Calcite Design System
-
-React ArcGIS includes full support for Esri's Calcite Design System. All Calcite web components are available as React components:
-
-```tsx
-import {
-  Map,
-  MapView,
-  CalciteShell,
-  CalcitePanel,
-  CalciteButton,
-  CalciteSwitch
-} from 'react-arcgis';
-import '@esri/calcite-components/dist/calcite/calcite.css';
-
-function App() {
-  return (
-    <CalciteShell>
-      <CalciteShellPanel slot="panel-start">
-        <CalcitePanel heading="Controls">
-          <CalciteButton>Click Me</CalciteButton>
-        </CalcitePanel>
-      </CalciteShellPanel>
+    <div>
+      <button onClick={() => setTheme('light')}>Light</button>
+      <button onClick={() => setTheme('dark')}>Dark</button>
+      <button onClick={() => setTheme('auto')}>Auto</button>
       
-      <Map basemap="streets-vector">
-        <MapView center={[-118.805, 34.027]} zoom={13} />
+      <Map basemap="gray-vector">
+        <MapView center={[-98, 40]} zoom={4} />
       </Map>
-    </CalciteShell>
+    </div>
   );
 }
 ```
 
-For complete Calcite documentation, see [CALCITE.md](./CALCITE.md).
+## Browser Support
 
-## Best Practices
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
 
-1. **Always wrap layers in a View component**: Layers need a map and view context to function properly.
+## TypeScript
 
-2. **Use the `useView` hook**: Access the view and map from nested components without prop drilling.
-
-3. **Handle async operations**: ArcGIS SDK operations are async. Use `onLoad` and `onViewReady` callbacks.
-
-4. **Manage layer lifecycle**: Layers are automatically added/removed when components mount/unmount.
-
-5. **Memoize complex objects**: Use `useMemo` for layer configurations to prevent unnecessary re-renders.
+Full TypeScript support included. Import types as needed:
 
 ```tsx
-const renderer = useMemo(() => ({
-  type: 'simple',
-  symbol: { type: 'simple-fill', color: 'blue' }
-}), []);
+import type { 
+  MapProps, 
+  MapViewProps, 
+  FeatureLayerProps,
+  UsePortalOptions,
+  QueryFeaturesOptions
+} from 'react-arcgis';
 ```
-
-6. **Use Calcite for UI**: Leverage Calcite components for consistent, professional UI that matches the ArcGIS aesthetic.
-
-## ✨ Key Features
-
-- **46 Components** - 23 layers + 18 widgets + 5 core components
-- **36+ Hooks** - Complete functionality including query, analysis, routing, and portal (9 Portal hooks)
-- **React-First Design** - All components follow React best practices with hooks, context, and TypeScript
-- **Advanced GIS Analysis** - 8 specialized hooks for queries, statistics, spatial operations, and routing
-- **Automatic Lifecycle Management** - No manual `destroy()` or cleanup needed
-- **Theme Support** - Built-in light/dark mode with auto system preference detection
-- **TypeScript** - Full type definitions included
-- **Modern Build** - ESM and CJS formats, tree-shakeable
-
-## 📚 Documentation
-
-- [Widget Library Guide](./WIDGET_LIBRARY.md) - Complete documentation for all 18 widget components
-- [Layer Library Guide](./LAYER_LIBRARY.md) - Complete documentation for all 23 layer components
-- [Analysis Hooks Guide](./ANALYSIS_HOOKS_GUIDE.md) - Query and analysis hooks for GIS operations
-- [Portal Integration Guide](./PORTAL_INTEGRATION_GUIDE.md) - Portal integration with 9 specialized hooks
-- [WebMap/WebScene Guide](./WEBMAP_WEBSCENE_GUIDE.md) - Load maps from ArcGIS Online/Portal
-- [Layer Quick Reference](./LAYER_GUIDE_QUICK.md) - Quick reference and layer selection guide
-- [Theming Guide](./THEMING.md) - Theme system documentation
-- [What's New](./WHATS_NEW.md) - Latest features and improvements
-- [Complete Guide](./COMPLETE_GUIDE.md) - Master documentation for all features
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
 ## License
 
-MIT
+MIT © [Your Name]
 
 ## Resources
 
-- [ArcGIS SDK for JavaScript Documentation](https://developers.arcgis.com/javascript/latest/)
-- [ArcGIS Developer Portal](https://developers.arcgis.com/)
-- [React Documentation](https://react.dev/)
+- [ArcGIS Maps SDK for JavaScript](https://developers.arcgis.com/javascript/)
+- [Calcite Design System](https://developers.arcgis.com/calcite-design-system/)
+- [ArcGIS Developer](https://developers.arcgis.com/)
+
+## Support
+
+- 📖 [Documentation](./docs/README.md)
+- 🐛 [Issue Tracker](https://github.com/your-repo/react-arcgis/issues)
+- 💬 [Discussions](https://github.com/your-repo/react-arcgis/discussions)
+- 📧 [Email Support](mailto:support@example.com)
+
+---
+
+**Built with ❤️ for the ArcGIS developer community**
