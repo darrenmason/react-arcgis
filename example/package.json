@@ -11,6 +11,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "@arcgis/core": "^4.28.0",
+    "@esri/calcite-components": "^2.5.1",
+    "@esri/calcite-components-react": "^2.5.1",
     "react-arcgis": "file:.."
   },
   "devDependencies": {

@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2026-02-12
+
+### Added
+- Full Calcite Design System integration via `@esri/calcite-components-react`
+- All Calcite web components exported as React components
+- CalciteExample demonstrating Calcite + ArcGIS integration
+- CALCITE.md documentation with patterns and examples
+- Automatic asset path configuration for Calcite icons
+
 ## [1.0.0] - 2026-02-12
 
 ### Added

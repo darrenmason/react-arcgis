@@ -10,6 +10,7 @@ A React-friendly wrapper library for the ArcGIS SDK for JavaScript, providing de
 - 📦 **TypeScript Support**: Full TypeScript definitions included
 - 🌍 **Comprehensive Components**: Map, MapView, SceneView, and various layer types
 - 🔌 **Context API Integration**: Share view and map instances across components
+- 🎨 **Calcite Design System**: Full integration with Esri's Calcite web components
 
 ## Installation
 
@@ -17,10 +18,14 @@ A React-friendly wrapper library for the ArcGIS SDK for JavaScript, providing de
 npm install react-arcgis @arcgis/core
 ```
 
-Don't forget to include the ArcGIS CSS in your HTML:
+Don't forget to include the required CSS in your application:
 
-```html
-<link rel="stylesheet" href="https://js.arcgis.com/4.28/@arcgis/core/assets/esri/themes/light/main.css">
+```tsx
+// ArcGIS CSS (required)
+import '@arcgis/core/assets/esri/themes/light/main.css';
+
+// Calcite CSS (optional, for Calcite components)
+import '@esri/calcite-components/dist/calcite/calcite.css';
 ```
 
 ## Quick Start
@@ -413,6 +418,40 @@ import type {
 } from 'react-arcgis';
 ```
 
+## Calcite Design System
+
+React ArcGIS includes full support for Esri's Calcite Design System. All Calcite web components are available as React components:
+
+```tsx
+import {
+  Map,
+  MapView,
+  CalciteShell,
+  CalcitePanel,
+  CalciteButton,
+  CalciteSwitch
+} from 'react-arcgis';
+import '@esri/calcite-components/dist/calcite/calcite.css';
+
+function App() {
+  return (
+    <CalciteShell>
+      <CalciteShellPanel slot="panel-start">
+        <CalcitePanel heading="Controls">
+          <CalciteButton>Click Me</CalciteButton>
+        </CalcitePanel>
+      </CalciteShellPanel>
+      
+      <Map basemap="streets-vector">
+        <MapView center={[-118.805, 34.027]} zoom={13} />
+      </Map>
+    </CalciteShell>
+  );
+}
+```
+
+For complete Calcite documentation, see [CALCITE.md](./CALCITE.md).
+
 ## Best Practices
 
 1. **Always wrap layers in a View component**: Layers need a map and view context to function properly.
@@ -431,6 +470,8 @@ const renderer = useMemo(() => ({
   symbol: { type: 'simple-fill', color: 'blue' }
 }), []);
 ```
+
+6. **Use Calcite for UI**: Leverage Calcite components for consistent, professional UI that matches the ArcGIS aesthetic.
 
 ## Contributing
 

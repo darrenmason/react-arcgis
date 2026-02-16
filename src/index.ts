@@ -22,6 +22,9 @@ export {
 // Context
 export { ViewProvider } from './context/ViewContext';
 
+// Calcite Components (re-exported from @esri/calcite-components-react)
+export * from './calcite';
+
 // Types
 export type {
   BaseMapProps,
