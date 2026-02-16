@@ -82,3 +82,6 @@ export interface ViewContext {
   view: ViewType | null;
   map: Map | null;
 }
+
+// Re-export theme types
+export type { Theme, ThemeMode, CalciteMode, ArcGISTheme } from './hooks/useTheme';

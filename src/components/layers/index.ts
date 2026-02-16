@@ -1,3 +1,10 @@
 export { FeatureLayer } from './FeatureLayer';
 export { GraphicsLayer } from './GraphicsLayer';
 export { GeoJSONLayer } from './GeoJSONLayer';
+export { TileLayer } from './TileLayer';
+export { VectorTileLayer } from './VectorTileLayer';
+export { MapImageLayer } from './MapImageLayer';
+export { ImageryLayer } from './ImageryLayer';
+export { CSVLayer } from './CSVLayer';
+export { KMLLayer } from './KMLLayer';
+export { GroupLayer } from './GroupLayer';
