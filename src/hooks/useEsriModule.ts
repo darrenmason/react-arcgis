@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 export function useEsriModule<T>(
-  importFn: () => Promise<{ default: new (...args: any[]) => T }>,
+  importFn: () => Promise<{ default?: new (...args: any[]) => T } | Record<string, unknown>>,
   moduleName: string
 ) {
   const [Module, setModule] = useState<(new (...args: any[]) => T) | null>(null);
@@ -12,9 +12,10 @@ export function useEsriModule<T>(
 
     const loadModule = async () => {
       try {
-        const [module] = await Promise.all([importFn()]);
+        const mod = await importFn();
         if (mounted) {
-          setModule(() => module.default);
+          const resolved = (mod as any).default ?? mod;
+          setModule(() => resolved as new (...args: any[]) => T);
         }
       } catch (err) {
         if (mounted) {

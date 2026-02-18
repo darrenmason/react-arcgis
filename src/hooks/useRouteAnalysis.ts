@@ -110,7 +110,7 @@ export function useRouteAnalysis(serviceUrl?: string) {
       });
 
       if (options.barriers) {
-        routeParams.barriers = new FeatureSetModule({ features: options.barriers });
+        (routeParams as any).barriers = new FeatureSetModule({ features: options.barriers });
       }
 
       const result = await (routeModule as any).solve(serviceUrl, routeParams);

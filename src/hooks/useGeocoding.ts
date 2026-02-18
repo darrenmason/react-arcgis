@@ -63,7 +63,7 @@ export function useGeocoding(serviceUrl: string = 'https://geocode-api.arcgis.co
         categories: options.categories
       };
 
-      const response = await locatorModule.addressToLocations(serviceUrl, params);
+      const response = await (locatorModule as any).addressToLocations(serviceUrl, params);
       setResults(response);
       return response;
     } catch (err) {
@@ -85,7 +85,7 @@ export function useGeocoding(serviceUrl: string = 'https://geocode-api.arcgis.co
     setError(null);
 
     try {
-      const response = await locatorModule.locationToAddress(serviceUrl, {
+      const response = await (locatorModule as any).locationToAddress(serviceUrl, {
         location
       });
       return response;
@@ -105,7 +105,7 @@ export function useGeocoding(serviceUrl: string = 'https://geocode-api.arcgis.co
     }
 
     try {
-      const response = await locatorModule.suggestLocations(serviceUrl, {
+      const response = await (locatorModule as any).suggestLocations(serviceUrl, {
         text,
         ...options
       });

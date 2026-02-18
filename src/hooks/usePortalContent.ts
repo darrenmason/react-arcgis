@@ -114,9 +114,7 @@ export function usePortalContent(portal?: __esri.Portal) {
 
       // Set access level if specified
       if (options.access && options.access !== 'private') {
-        await item.update({
-          access: options.access
-        });
+        await item.update({ ...options, access: options.access } as any);
       }
 
       return item;
@@ -222,7 +220,7 @@ export function usePortalContent(portal?: __esri.Portal) {
       });
 
       await item.load();
-      await item.share(options);
+      await (item as any).share(options);
       return item;
     } catch (err) {
       const error = err as Error;

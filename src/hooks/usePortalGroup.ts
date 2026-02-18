@@ -86,7 +86,7 @@ export function usePortalGroup(options: UsePortalGroupOptions) {
         portal: options.portal
       });
 
-      await portalGroup.load();
+      await (portalGroup as any).load();
       setGroup(portalGroup);
     } catch (err) {
       const error = err as Error;
@@ -139,7 +139,7 @@ export function usePortalGroup(options: UsePortalGroupOptions) {
     setError(null);
 
     try {
-      const members = await group.getMembers();
+      const members = await group.fetchMembers();
       return members;
     } catch (err) {
       const error = err as Error;

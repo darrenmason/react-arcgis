@@ -86,7 +86,7 @@ export function usePortalItem(options: UsePortalItemOptions) {
       // Update properties
       Object.assign(item, properties);
       await item.update();
-      setItem({ ...item });
+      setItem(item as __esri.PortalItem);
       return item;
     } catch (err) {
       const error = err as Error;

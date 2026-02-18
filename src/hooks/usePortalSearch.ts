@@ -104,12 +104,13 @@ export function usePortalSearch(portal?: __esri.Portal) {
 
       const response = await portal.queryItems(queryParams);
       
+      const res = response as any;
       const searchResult: PortalSearchResult = {
         results: response.results,
         total: response.total,
-        start: response.start,
-        num: response.num,
-        nextStart: response.nextStart,
+        start: res.start ?? 0,
+        num: res.num ?? response.results.length,
+        nextStart: res.nextStart ?? -1,
         query: options.query
       };
 
@@ -144,13 +145,13 @@ export function usePortalSearch(portal?: __esri.Portal) {
       });
 
       const response = await portal.queryItems(queryParams);
-      
+      const res = response as any;
       const newResults: PortalSearchResult = {
         results: [...results.results, ...response.results],
         total: response.total,
         start: results.start,
         num: results.results.length + response.results.length,
-        nextStart: response.nextStart,
+        nextStart: res.nextStart ?? -1,
         query: results.query
       };
 

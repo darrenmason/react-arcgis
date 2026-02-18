@@ -71,7 +71,7 @@ export function useSpatialQuery(layer?: FeatureLayer) {
       const query = layer.createQuery();
       query.geometry = point;
       query.distance = options.distance;
-      query.units = options.units;
+      query.units = options.units as any;
       query.spatialRelationship = 'intersects';
       
       if (options.where) query.where = options.where;

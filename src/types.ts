@@ -13,6 +13,7 @@ export interface BaseMapProps {
   className?: string;
   style?: React.CSSProperties;
   onLoad?: (map: Map) => void;
+  children?: React.ReactNode;
 }
 
 export interface MapViewProps {

@@ -53,14 +53,27 @@ export function SceneView({
 
   return (
     <div
-      ref={containerRef}
       className={className}
       style={{
+        position: 'relative',
         width: '100%',
         height: '100%',
         ...style
       }}
     >
+      {/* Dedicated empty container for ArcGIS - view and its UI overlay render here */}
+      <div
+        ref={containerRef}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          width: '100%',
+          height: '100%'
+        }}
+      />
       {view && (
         <ViewProvider value={{ view, map: map || null }}>
           {children}

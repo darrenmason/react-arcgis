@@ -63,7 +63,7 @@ export function usePortal(options: UsePortalOptions = {}) {
         if (!mounted) return;
 
         setPortal(portalInstance);
-        setUser(portalInstance.user);
+        setUser(portalInstance.user ?? null);
       } catch (err) {
         if (mounted) {
           setError(err as Error);
@@ -88,7 +88,7 @@ export function usePortal(options: UsePortalOptions = {}) {
 
     try {
       const credential = await (portal as any).load();
-      setUser(portal.user);
+      setUser(portal.user ?? null);
       return credential;
     } catch (err) {
       console.error('Sign in error:', err);

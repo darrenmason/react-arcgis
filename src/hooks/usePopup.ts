@@ -49,7 +49,7 @@ export function usePopup(options: UsePopupOptions) {
     if (config.actions !== undefined) popup.actions = config.actions as any;
     if (config.dockEnabled !== undefined) popup.dockEnabled = config.dockEnabled;
     if (config.dockOptions !== undefined) popup.dockOptions = config.dockOptions as any;
-    if (config.autoOpenEnabled !== undefined) popup.autoOpenEnabled = config.autoOpenEnabled;
+    if (config.autoOpenEnabled !== undefined) (popup as any).autoOpenEnabled = config.autoOpenEnabled;
     if (config.highlightEnabled !== undefined) popup.highlightEnabled = config.highlightEnabled;
     if (config.visibleElements !== undefined) popup.visibleElements = config.visibleElements as any;
 

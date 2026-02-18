@@ -61,7 +61,7 @@ export function useQueryFeatures(layer?: FeatureLayer) {
       if (options.geometry) query.geometry = options.geometry;
       if (options.spatialRelationship) query.spatialRelationship = options.spatialRelationship;
       if (options.distance !== undefined) query.distance = options.distance;
-      if (options.units) query.units = options.units;
+      if (options.units) query.units = options.units as any;
       if (options.outFields) query.outFields = options.outFields;
       if (options.returnGeometry !== undefined) query.returnGeometry = options.returnGeometry;
       if (options.maxRecordCount) query.num = options.maxRecordCount;

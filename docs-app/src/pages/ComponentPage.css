@@ -1,0 +1,73 @@
+.component-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 32px;
+}
+
+.component-header {
+  margin-bottom: 48px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.component-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  background: #4a9eff;
+  color: white;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 16px;
+}
+
+.component-header h1 {
+  font-size: 48px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 16px;
+}
+
+.component-description {
+  font-size: 18px;
+  color: #666;
+  line-height: 1.6;
+}
+
+.component-section {
+  margin-bottom: 48px;
+}
+
+.component-section h2 {
+  font-size: 32px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.component-section p {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.6;
+}
+
+.instructions-list {
+  list-style: decimal;
+  padding-left: 24px;
+  color: #666;
+}
+
+.instructions-list li {
+  margin-bottom: 12px;
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+.instructions-list li::marker {
+  color: #4a9eff;
+  font-weight: 600;
+}

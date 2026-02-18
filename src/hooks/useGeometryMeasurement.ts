@@ -3,7 +3,7 @@ import { useEsriModule } from './useEsriModule';
 
 export interface MeasurementResult {
   value: number;
-  unit: string;
+  unit: string | number;
 }
 
 /**
@@ -79,7 +79,7 @@ export function useGeometryMeasurement() {
 
   const measureArea = useCallback(async (
     geometry: __esri.Polygon,
-    unit: __esri.ArealUnits = 'square-meters'
+    unit: __esri.AreaUnits = 'square-meters'
   ): Promise<MeasurementResult> => {
     if (!geometryEngineModule) {
       throw new Error('GeometryEngine module not loaded');

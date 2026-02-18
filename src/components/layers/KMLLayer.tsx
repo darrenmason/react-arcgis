@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import type { LayerProps } from '../../types';
 import type EsriKMLLayer from '@arcgis/core/layers/KMLLayer';
 import { useEsriModule } from '../../hooks/useEsriModule';
@@ -40,9 +41,12 @@ export function KMLLayer({
 
   usePropertyUpdater(layer, {
     visible: { value: visible },
-    opacity: { value: opacity },
-    refreshInterval: { value: refreshInterval, condition: !!refreshInterval }
+    opacity: { value: opacity }
   });
+
+  useEffect(() => {
+    if (layer && refreshInterval != null) (layer as any).refreshInterval = refreshInterval;
+  }, [layer, refreshInterval]);
 
   return null;
 }

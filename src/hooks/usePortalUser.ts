@@ -91,11 +91,11 @@ export function usePortalUser(options: UsePortalUserOptions = {}) {
           username: options.username,
           portal: options.portal
         });
-        await portalUser.load();
+        await (portalUser as any).load();
       } else if (options.portal?.user) {
         // Use signed-in user from portal
         portalUser = options.portal.user;
-        await portalUser.load();
+        await (portalUser as any).load();
       } else {
         throw new Error('Username or signed-in portal required');
       }
@@ -130,7 +130,7 @@ export function usePortalUser(options: UsePortalUserOptions = {}) {
         start: queryOptions.start || 1
       });
 
-      const response = await user.fetchContent(queryOptions.folder);
+      const response = await (user as any).fetchContent(queryOptions.folder);
       setContent(response);
       return response;
     } catch (err) {

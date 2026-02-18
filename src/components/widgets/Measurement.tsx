@@ -7,8 +7,8 @@ export interface MeasurementProps {
   view?: __esri.MapView | __esri.SceneView;
   position?: string | __esri.UIAddPosition;
   activeTool?: 'distance' | 'area' | null;
-  areaUnit?: __esri.MeasurementAreaUnit;
-  linearUnit?: __esri.MeasurementLinearUnit;
+  areaUnit?: string;
+  linearUnit?: string;
   onLoad?: (widget: EsriMeasurement) => void;
 }
 
