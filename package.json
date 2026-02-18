@@ -8,7 +8,6 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "example": "cd example && npm start",
     "prepare": "npm run build"
   },
   "keywords": [

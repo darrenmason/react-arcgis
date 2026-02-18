@@ -29,5 +29,11 @@ export default {
       declarationDir: 'dist'
     })
   ],
-  external: ['react', 'react-dom', '@arcgis/core']
+  external: ['react', 'react-dom', '@arcgis/core'],
+  // Calcite Components React uses top-level `this` (CommonJS style); resolve to globalThis to avoid rewrite warning
+  moduleContext: (id) => {
+    if (id.includes('@esri/calcite-components-react')) {
+      return 'globalThis';
+    }
+  }
 };
