@@ -7,7 +7,6 @@ import {
   FeatureLayer,
   TileLayer,
   GraphicsLayer,
-  GeoJSONLayer,
   Zoom,
   Home,
   Search,

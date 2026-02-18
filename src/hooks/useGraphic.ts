@@ -1,12 +1,9 @@
 import { useState, useEffect } from 'react';
 import type Graphic from '@arcgis/core/Graphic';
 
-export interface UseGraphicOptions {
-  geometry?: __esri.GeometryProperties;
-  symbol?: __esri.SymbolProperties;
-  attributes?: Record<string, any>;
-  popupTemplate?: __esri.PopupTemplateProperties;
-}
+/** Options for useGraphic – matches GraphicProperties so geometry/symbol accept type-discriminated objects */
+export interface UseGraphicOptions
+  extends Pick<__esri.GraphicProperties, 'geometry' | 'symbol' | 'attributes' | 'popupTemplate'> {}
 
 export const useGraphic = (options: UseGraphicOptions) => {
   const [graphic, setGraphic] = useState<Graphic | null>(null);
@@ -25,10 +22,10 @@ export const useGraphic = (options: UseGraphicOptions) => {
         if (!mounted) return;
 
         const newGraphic = new Graphic.default({
-          geometry: options.geometry as any,
-          symbol: options.symbol as any,
+          geometry: options.geometry,
+          symbol: options.symbol,
           attributes: options.attributes,
-          popupTemplate: options.popupTemplate as any
+          popupTemplate: options.popupTemplate
         });
 
         setGraphic(newGraphic);

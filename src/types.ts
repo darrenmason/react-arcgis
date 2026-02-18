@@ -8,7 +8,7 @@ export type ViewType = MapView | SceneView;
 
 export interface BaseMapProps {
   basemap?: string | __esri.Basemap;
-  ground?: __esri.Ground;
+  ground?: __esri.Ground | __esri.GroundProperties | string;
   layers?: Layer[];
   className?: string;
   style?: React.CSSProperties;
