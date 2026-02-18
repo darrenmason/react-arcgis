@@ -2,6 +2,11 @@
   margin-bottom: 48px;
 }
 
+.example-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
 .section-description {
   font-size: 14px;
   color: #666;
@@ -10,12 +15,19 @@
 
 .example-container {
   border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  overflow: visible;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  overflow: hidden;
   background: #fafafa;
-  min-height: 400px;
+  height: 400px;
   position: relative;
   padding: 0;
+  isolation: isolate; /* Create new stacking context */
+}
+
+.example-wrapper:has(.attribution-footer) .example-container {
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
 }
 
 /* Map containers should fill the example container */
@@ -23,6 +35,70 @@
   height: 100%;
   width: 100%;
   position: relative;
+}
+
+/* Ensure ArcGIS view root creates proper stacking context */
+.example-container .esri-view-root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+/* Ensure ArcGIS view fills container */
+.example-container .esri-view {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ArcGIS UI overlay - must be absolutely positioned on top */
+.example-container .esri-ui {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.example-container .esri-ui-inner-container {
+  pointer-events: none;
+}
+
+.example-container .esri-ui-corner {
+  pointer-events: none;
+}
+
+/* Widgets should be interactive */
+.example-container .esri-component,
+.example-container .esri-widget {
+  pointer-events: auto;
+  position: relative;
+}
+
+/* Hide default attribution widget - we show it in footer instead */
+.example-container .esri-attribution {
+  display: none !important;
+}
+
+/* Attribution footer below the map */
+.attribution-footer {
+  padding: 8px 12px;
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  font-size: 11px;
+  color: #666;
+  line-height: 1.4;
+  text-align: right;
+  min-height: 24px;
 }
 
 .loading {

@@ -35,19 +35,56 @@ export default function LiveExample({ doc }: LiveExampleProps) {
       <p className="section-description">
         See the component in action. Interact with the example below.
       </p>
-      <div className="example-container">
-        <Suspense fallback={<div className="loading">Loading example...</div>}>
-          {ExampleComponent ? (
-            <ExampleComponent />
-          ) : (
-            <div className="no-example">
-              <p>Live example coming soon!</p>
-              <p className="hint">Check the code example below for usage.</p>
-            </div>
-          )}
-        </Suspense>
+      <div className="example-wrapper">
+        <div className="example-container">
+          <Suspense fallback={<div className="loading">Loading example...</div>}>
+            {ExampleComponent ? (
+              <ExampleComponent />
+            ) : (
+              <div className="no-example">
+                <p>Live example coming soon!</p>
+                <p className="hint">Check the code example below for usage.</p>
+              </div>
+            )}
+          </Suspense>
+        </div>
+        <AttributionFooter />
       </div>
     </section>
+  );
+}
+
+function AttributionFooter() {
+  const [attribution, setAttribution] = useState<string>('');
+
+  useEffect(() => {
+    // Find attribution element in the example container
+    const checkAttribution = () => {
+      const container = document.querySelector('.example-container');
+      if (!container) return;
+
+      const attributionEl = container.querySelector('.esri-attribution');
+      if (attributionEl) {
+        const text = attributionEl.textContent || '';
+        if (text && text !== attribution) {
+          setAttribution(text.trim());
+        }
+      }
+    };
+
+    // Check immediately and on interval (attribution loads asynchronously)
+    checkAttribution();
+    const interval = setInterval(checkAttribution, 500);
+
+    return () => clearInterval(interval);
+  }, [attribution]);
+
+  if (!attribution) return null;
+
+  return (
+    <div className="attribution-footer">
+      {attribution}
+    </div>
   );
 }
 
@@ -126,7 +163,15 @@ function ZoomExample() {
   return (
     <div style={{ height: '400px', border: '1px solid #e0e0e0', borderRadius: '8px', overflow: 'visible', position: 'relative' }}>
       <Map basemap="gray-vector">
-        <MapView center={[-118, 34]} zoom={10} style={{ height: '100%', width: '100%' }}>
+        <MapView 
+          center={[-118, 34]} 
+          zoom={10} 
+          style={{ height: '100%', width: '100%' }}
+          onViewReady={(view) => {
+            // Disable default zoom widget - we're using our custom Zoom component
+            view.ui.components = ['attribution'];
+          }}
+        >
           <Zoom position="top-left" />
         </MapView>
       </Map>
