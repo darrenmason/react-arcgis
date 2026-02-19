@@ -204,13 +204,70 @@ function SearchExample() {
 }
 
 function LayerListExample() {
+  const { Module: FeatureLayerModule } = useEsriModule<__esri.FeatureLayer>(
+    () => import('@arcgis/core/layers/FeatureLayer'),
+    'FeatureLayer'
+  );
+  const { Module: GeoJSONLayerModule } = useEsriModule<__esri.GeoJSONLayer>(
+    () => import('@arcgis/core/layers/GeoJSONLayer'),
+    'GeoJSONLayer'
+  );
+  const [layers, setLayers] = useState<__esri.Layer[]>([]);
+
+  useEffect(() => {
+    if (!FeatureLayerModule || !GeoJSONLayerModule) return;
+    const demoPoints1Url = new URL('/demo-data/legend-demo.geojson', window.location.href).href;
+    const demoPoints2Url = new URL('/demo-data/demo-points-2.geojson', window.location.href).href;
+    const citiesLayer = new FeatureLayerModule({
+      url: 'https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Major_Cities/FeatureServer/0',
+      title: 'USA Major Cities'
+    });
+    const demoPoints1Layer = new GeoJSONLayerModule({
+      url: demoPoints1Url,
+      title: 'Demo points 1',
+      renderer: {
+        type: 'simple',
+        symbol: {
+          type: 'simple-marker',
+          color: [255, 165, 0],
+          size: 18,
+          outline: { color: [255, 255, 255], width: 3 }
+        }
+      } as __esri.SimpleRendererProperties
+    });
+    const demoPoints2Layer = new GeoJSONLayerModule({
+      url: demoPoints2Url,
+      title: 'Demo points 2',
+      renderer: {
+        type: 'simple',
+        symbol: {
+          type: 'simple-marker',
+          color: [66, 135, 245],
+          size: 18,
+          outline: { color: [255, 255, 255], width: 3 }
+        }
+      } as __esri.SimpleRendererProperties
+    });
+    setLayers([citiesLayer, demoPoints1Layer, demoPoints2Layer]);
+    return () => {
+      citiesLayer.destroy();
+      demoPoints1Layer.destroy();
+      demoPoints2Layer.destroy();
+    };
+  }, [FeatureLayerModule, GeoJSONLayerModule]);
+
+  if (layers.length === 0) {
+    return (
+      <div style={{ height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #e0e0e0', borderRadius: '8px' }}>
+        Loading map…
+      </div>
+    );
+  }
+
   return (
     <div style={{ height: '400px', border: '1px solid #e0e0e0', borderRadius: '8px', overflow: 'visible', position: 'relative' }}>
-      <Map basemap="gray-vector">
-        <MapView center={[-118, 34]} zoom={10} style={{ height: '100%', width: '100%' }}>
-          <FeatureLayer
-            url="https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Major_Cities/FeatureServer/0"
-          />
+      <Map basemap="gray-vector" layers={layers}>
+        <MapView center={[-98, 39]} zoom={5} style={{ height: '100%', width: '100%' }}>
           <LayerList position="top-right" />
         </MapView>
       </Map>

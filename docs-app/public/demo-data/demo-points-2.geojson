@@ -1,0 +1,25 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-115, 40] },
+      "properties": { "name": "West 1" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-110, 35] },
+      "properties": { "name": "Southwest" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-120, 38] },
+      "properties": { "name": "West 2" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-105, 43] },
+      "properties": { "name": "North" }
+    }
+  ]
+}
