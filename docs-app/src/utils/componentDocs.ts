@@ -837,35 +837,56 @@ function GeoJSONMap() {
   );
 }`,
     props: [
-      {
-        name: 'url',
-        type: 'string',
-        required: false,
-        description: 'URL to GeoJSON file'
-      },
-      {
-        name: 'data',
-        type: 'GeoJSON',
-        required: false,
-        description: 'GeoJSON data object'
-      },
-      {
-        name: 'renderer',
-        type: 'Renderer',
-        required: false,
-        description: 'Renderer for styling features'
-      },
-      {
-        name: 'onLoad',
-        type: '(layer: GeoJSONLayer) => void',
-        required: false,
-        description: 'Callback when layer is loaded'
-      }
+      { name: 'url', type: 'string', required: false, description: 'URL of the GeoJSON file or blob URL for in-memory data' },
+      { name: 'portalItem', type: 'PortalItem', required: false, description: 'Portal item referencing the GeoJSON file' },
+      { name: 'copyright', type: 'string', required: false, description: 'Copyright information for the layer' },
+      { name: 'title', type: 'string', required: false, description: 'Title for the layer (Legend, LayerList)' },
+      { name: 'id', type: 'string', required: false, description: 'Unique ID for the layer' },
+      { name: 'visible', type: 'boolean', required: false, description: 'Whether the layer is visible' },
+      { name: 'opacity', type: 'number', required: false, description: 'Layer opacity (0–1)' },
+      { name: 'listMode', type: "'show' | 'hide' | 'hide-children'", required: false, description: 'How the layer displays in the LayerList' },
+      { name: 'legendEnabled', type: 'boolean', required: false, description: 'Whether the layer is included in the legend' },
+      { name: 'minScale', type: 'number', required: false, description: 'Minimum scale at which the layer is visible (0 = no minimum)' },
+      { name: 'maxScale', type: 'number', required: false, description: 'Maximum scale at which the layer is visible (0 = no maximum)' },
+      { name: 'visibilityTimeExtent', type: 'TimeExtent', required: false, description: 'Time extent during which the layer is visible' },
+      { name: 'definitionExpression', type: 'string', required: false, description: 'SQL where clause to filter features on the client' },
+      { name: 'displayField', type: 'string', required: false, description: 'Primary display field name' },
+      { name: 'displayFilterEnabled', type: 'boolean', required: false, description: 'Whether displayFilterInfo is applied when rendering' },
+      { name: 'displayFilterInfo', type: 'DisplayFilterInfo', required: false, description: 'Display filter (visibility) for the layer' },
+      { name: 'objectIdField', type: 'string', required: false, description: 'Field containing unique identifier for each feature' },
+      { name: 'geometryType', type: "'point' | 'polygon' | 'polyline' | 'multipoint'", required: false, description: 'Geometry type of features in the layer' },
+      { name: 'fields', type: 'Field[]', required: false, description: 'Array of field definitions' },
+      { name: 'outFields', type: 'string[]', required: false, description: 'Field names to include with each feature (e.g. ["*"])' },
+      { name: 'renderer', type: 'Renderer', required: false, description: 'Renderer for styling features' },
+      { name: 'popupEnabled', type: 'boolean', required: false, description: 'Whether to show popups when features are clicked' },
+      { name: 'popupTemplate', type: 'PopupTemplate', required: false, description: 'Popup template for the layer' },
+      { name: 'labelingInfo', type: 'LabelClass[]', required: false, description: 'Label definition (array of LabelClass)' },
+      { name: 'labelsVisible', type: 'boolean', required: false, description: 'Whether to display labels' },
+      { name: 'effect', type: 'Effect | string', required: false, description: 'CSS filter-like effect applied to the layer' },
+      { name: 'elevationInfo', type: 'ElevationInfo', required: false, description: 'How features are placed on the vertical axis (SceneView)' },
+      { name: 'featureEffect', type: 'FeatureEffect', required: false, description: 'Feature effect (filter + included/excluded effects)' },
+      { name: 'featureReduction', type: 'FeatureReductionBinning | FeatureReductionCluster | FeatureReductionSelection', required: false, description: 'Feature reduction (cluster, binning, selection)' },
+      { name: 'blendMode', type: 'string', required: false, description: 'Blend mode for the layer' },
+      { name: 'customParameters', type: 'Record<string, string>', required: false, description: 'Custom parameters appended to resource URLs' },
+      { name: 'editingEnabled', type: 'boolean', required: false, description: 'Whether the layer is editable (client-side only)' },
+      { name: 'orderBy', type: 'OrderByInfo[]', required: false, description: 'Order in which features are drawn' },
+      { name: 'attributeTableTemplate', type: 'AttributeTableTemplate', required: false, description: 'Attribute table template for FeatureTable' },
+      { name: 'persistenceEnabled', type: 'boolean', required: false, description: 'Whether the layer can be persisted in WebMap/WebScene' },
+      { name: 'refreshInterval', type: 'number', required: false, description: 'Refresh interval in minutes (0 = no refresh)' },
+      { name: 'timeInfo', type: 'TimeInfo', required: false, description: 'Time info (start/end fields); set at layer init' },
+      { name: 'timeExtent', type: 'TimeExtent', required: false, description: 'Time extent for the layer' },
+      { name: 'timeOffset', type: 'TimeInterval', required: false, description: 'Temporary time offset' },
+      { name: 'useViewTime', type: 'boolean', required: false, description: 'Whether temporal data follows the view timeExtent' },
+      { name: 'screenSizePerspectiveEnabled', type: 'boolean', required: false, description: 'Perspective scaling for screen-size symbols in SceneView' },
+      { name: 'trackInfo', type: 'TrackInfo', required: false, description: 'Track info for rendering track data' },
+      { name: 'map', type: 'Map', required: false, description: 'Map instance (from MapContext)' },
+      { name: 'view', type: 'MapView | SceneView', required: false, description: 'View instance (from ViewContext)' },
+      { name: 'onLoad', type: '(layer: GeoJSONLayer) => void', required: false, description: 'Callback when layer is loaded' }
     ],
     instructions: [
       'Must be a child of MapView or SceneView',
-      'Provide either url or data prop',
-      'Supports all standard GeoJSON geometry types'
+      'Provide url (or portalItem) pointing to GeoJSON or a blob URL from in-memory data',
+      'Supports all standard GeoJSON geometry types (Point, LineString, Polygon, etc.)'
     ]
   },
   {
