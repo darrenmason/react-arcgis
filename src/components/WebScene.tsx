@@ -18,8 +18,10 @@ export function WebScene({ portalItem, onLoad, children }: WebSceneProps) {
     'WebScene'
   );
 
+  const portalItemId = typeof portalItem === 'object' && portalItem !== null && 'id' in portalItem ? portalItem.id : undefined;
+
   useEffect(() => {
-    if (!WebSceneModule) return;
+    if (!WebSceneModule || !portalItemId) return;
 
     let mounted = true;
 
@@ -53,7 +55,7 @@ export function WebScene({ portalItem, onLoad, children }: WebSceneProps) {
         webSceneRef.current = null;
       }
     };
-  }, [WebSceneModule, portalItem]);
+  }, [WebSceneModule, portalItemId]);
 
   if (!webScene) return null;
 

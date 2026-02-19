@@ -618,7 +618,7 @@ function PortalScene() {
   return (
     <WebScene
       portalItem={{
-        id: '3a9976baef924aaabf1b20a4d89e2a77'
+        id: '3a9976baef9240ab8645ee25c7e9c096'
       }}
     />
   );

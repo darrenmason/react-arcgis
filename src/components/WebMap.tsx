@@ -18,8 +18,10 @@ export function WebMap({ portalItem, onLoad, children }: WebMapProps) {
     'WebMap'
   );
 
+  const portalItemId = typeof portalItem === 'object' && portalItem !== null && 'id' in portalItem ? portalItem.id : undefined;
+
   useEffect(() => {
-    if (!WebMapModule) return;
+    if (!WebMapModule || !portalItemId) return;
 
     let mounted = true;
 
@@ -53,7 +55,7 @@ export function WebMap({ portalItem, onLoad, children }: WebMapProps) {
         webMapRef.current = null;
       }
     };
-  }, [WebMapModule, portalItem]);
+  }, [WebMapModule, portalItemId]);
 
   if (!webMap) return null;
 

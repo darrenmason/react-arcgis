@@ -389,7 +389,9 @@ function WebMapExample() {
         portalItem={{
           id: 'e691172598f04ea8881cd2a4adaa45ba'
         }}
-      />
+      >
+        <MapView style={{ height: '100%', width: '100%' }} />
+      </WebMap>
     </div>
   );
 }
@@ -399,9 +401,11 @@ function WebSceneExample() {
     <div style={{ height: '400px', border: '1px solid #e0e0e0', borderRadius: '8px', overflow: 'hidden', position: 'relative' }}>
       <WebScene
         portalItem={{
-          id: '3a9976baef924aaabf1b20a4d89e2a77'
+          id: '3a9976baef9240ab8645ee25c7e9c096'
         }}
-      />
+      >
+        <SceneView style={{ height: '100%', width: '100%' }} />
+      </WebScene>
     </div>
   );
 }
