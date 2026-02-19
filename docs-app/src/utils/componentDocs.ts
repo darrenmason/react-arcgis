@@ -153,9 +153,9 @@ function DataMap() {
     props: [
       {
         name: 'url',
-        type: 'string',
+        type: 'string | null',
         required: false,
-        description: 'URL to the feature service or feature layer'
+        description: 'URL of the REST endpoint of the layer or feature service'
       },
       {
         name: 'portalItem',
@@ -164,16 +164,34 @@ function DataMap() {
         description: 'Portal item (e.g. { id }) to load the layer from ArcGIS Online or Enterprise'
       },
       {
+        name: 'source',
+        type: 'Graphic[] | Collection<Graphic>',
+        required: false,
+        description: 'Client-side graphics to create the layer from (alternative to url/portalItem)'
+      },
+      {
+        name: 'apiKey',
+        type: 'string | null',
+        required: false,
+        description: 'API key appended to all requests for the layer'
+      },
+      {
+        name: 'layerId',
+        type: 'number | null',
+        required: false,
+        description: 'Layer ID when loading from portalItem or service URL (default 0)'
+      },
+      {
         name: 'fields',
         type: 'Field[]',
         required: false,
-        description: 'Array of field definitions for the layer'
+        description: 'Array of field definitions (required for client-side source)'
       },
       {
         name: 'geometryType',
-        type: '"point" | "polyline" | "polygon" | "multipoint"',
+        type: 'string | null',
         required: false,
-        description: 'Geometry type of the features'
+        description: 'Geometry type of features; null for non-spatial tables'
       },
       {
         name: 'objectIdField',
@@ -183,16 +201,16 @@ function DataMap() {
       },
       {
         name: 'definitionExpression',
-        type: 'string',
+        type: 'string | null',
         required: false,
-        description: 'SQL where clause to filter features'
+        description: 'SQL where clause to filter features on the client'
       },
       {
         name: 'outFields',
-        type: 'string[]',
+        type: 'string[] | null',
         required: false,
         default: '["*"]',
-        description: 'Fields to include in queries and popups'
+        description: 'Field names to include with each feature'
       },
       {
         name: 'popupTemplate',
@@ -201,10 +219,110 @@ function DataMap() {
         description: 'Template for popup display when features are clicked'
       },
       {
+        name: 'popupEnabled',
+        type: 'boolean',
+        required: false,
+        default: 'true',
+        description: 'Whether to display popups when features are clicked'
+      },
+      {
         name: 'renderer',
         type: 'Renderer',
         required: false,
         description: 'Renderer for styling features'
+      },
+      {
+        name: 'blendMode',
+        type: 'string',
+        required: false,
+        description: 'Blend mode for the layer. See FeatureLayer blendMode in the API.'
+      },
+      {
+        name: 'effect',
+        type: 'Effect | string | null',
+        required: false,
+        description: 'CSS filter-like effect applied to the layer'
+      },
+      {
+        name: 'elevationInfo',
+        type: 'ElevationInfoProperties | null',
+        required: false,
+        description: 'How features are placed on the vertical axis (z). SceneView only.'
+      },
+      {
+        name: 'featureEffect',
+        type: 'FeatureEffectProperties | null',
+        required: false,
+        description: 'Feature effect (filter + included/excluded effects)'
+      },
+      {
+        name: 'featureReduction',
+        type: 'FeatureReductionBinning | FeatureReductionCluster | FeatureReductionSelection | null',
+        required: false,
+        description: 'Feature reduction (cluster, binning, or selection)'
+      },
+      {
+        name: 'labelingInfo',
+        type: 'LabelClassProperties[] | null',
+        required: false,
+        description: 'Label definition (array of LabelClass)'
+      },
+      {
+        name: 'labelsVisible',
+        type: 'boolean',
+        required: false,
+        default: 'true',
+        description: 'Whether to display labels'
+      },
+      {
+        name: 'id',
+        type: 'string',
+        required: false,
+        description: 'Unique ID for the layer'
+      },
+      {
+        name: 'listMode',
+        type: '"show" | "hide" | "hide-children"',
+        required: false,
+        description: 'How the layer displays in the LayerList component'
+      },
+      {
+        name: 'maxScale',
+        type: 'number',
+        required: false,
+        description: 'Maximum scale (most zoomed in) at which the layer is visible. 0 = no maximum.'
+      },
+      {
+        name: 'minScale',
+        type: 'number',
+        required: false,
+        description: 'Minimum scale (most zoomed out) at which the layer is visible. 0 = no minimum.'
+      },
+      {
+        name: 'persistenceEnabled',
+        type: 'boolean',
+        required: false,
+        default: 'true',
+        description: 'Enable persistence in WebMap or WebScene'
+      },
+      {
+        name: 'refreshInterval',
+        type: 'number',
+        required: false,
+        default: '0',
+        description: 'Refresh interval in minutes. 0 = no refresh.'
+      },
+      {
+        name: 'title',
+        type: 'string | null',
+        required: false,
+        description: 'Title for the layer (e.g. in Legend, LayerList)'
+      },
+      {
+        name: 'visibilityTimeExtent',
+        type: 'TimeExtentProperties | null',
+        required: false,
+        description: 'Time extent during which the layer is visible'
       },
       {
         name: 'opacity',
@@ -229,7 +347,7 @@ function DataMap() {
     ],
     instructions: [
       'Must be a child of MapView or SceneView',
-      'Provide a valid feature service URL',
+      'Provide url, portalItem, or source (client-side graphics)',
       'Use popupTemplate to customize popup content',
       'Use renderer to style features based on attributes'
     ]

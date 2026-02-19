@@ -83,7 +83,7 @@ export function TileLayer({
       blendMode,
       copyright,
       customParameters,
-      effect: effect as any,
+      effect,
       id,
       legendEnabled,
       listMode,
@@ -97,7 +97,7 @@ export function TileLayer({
       tileServers,
       title,
       url,
-      visibilityTimeExtent: visibilityTimeExtent as any,
+      visibilityTimeExtent,
       visible,
       opacity
     },
@@ -108,7 +108,7 @@ export function TileLayer({
   usePropertyUpdater(layer, {
     blendMode: { value: blendMode },
     copyright: { value: copyright, condition: copyright !== undefined },
-    effect: { value: effect as any, condition: effect !== undefined },
+    effect: { value: effect, condition: effect !== undefined },
     legendEnabled: { value: legendEnabled },
     listMode: { value: listMode },
     maxScale: { value: maxScale },
@@ -117,7 +117,7 @@ export function TileLayer({
     refreshInterval: { value: refreshInterval, condition: refreshInterval !== undefined },
     resampling: { value: resampling },
     title: { value: title },
-    visibilityTimeExtent: { value: visibilityTimeExtent as any, condition: visibilityTimeExtent !== undefined },
+    visibilityTimeExtent: { value: visibilityTimeExtent as __esri.TimeExtent | null, condition: visibilityTimeExtent !== undefined },
     visible: { value: visible },
     opacity: { value: opacity }
   });

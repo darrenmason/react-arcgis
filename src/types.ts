@@ -63,15 +63,118 @@ export interface LayerProps {
 }
 
 export interface FeatureLayerProps extends LayerProps {
-  url?: string;
-  portalItem?: __esri.PortalItemProperties;
+  /** API key for the layer (appended to requests). */
+  apiKey?: string | null;
+  /** Attribute table template for the layer's FeatureTable. */
+  attributeTableTemplate?: __esri.AttributeTableTemplateProperties | null;
+  /** Blend mode for the layer. See FeatureLayer blendMode in the API. */
+  blendMode?: __esri.FeatureLayerProperties['blendMode'];
+  /** Copyright information for the layer. */
+  copyright?: string | null;
+  /** Custom parameters appended to all layer request URLs. */
+  customParameters?: Record<string, string> | null;
+  /** Time zone that dates are stored in (e.g. "America/New_York"). */
+  dateFieldsTimeZone?: string | null;
+  /** SQL where clause used to filter features on the client. */
+  definitionExpression?: string | null;
+  /** Name of the layer's primary display field. */
+  displayField?: string | null;
+  /** Whether the layer's displayFilterInfo is applied when rendering. */
+  displayFilterEnabled?: boolean;
+  /** Display filter (visibility) for the layer. */
+  displayFilterInfo?: __esri.DisplayFilterInfoProperties | null;
+  /** Dynamic data source for map service sublayers or workspace data. */
+  dynamicDataSource?: __esri.DynamicDataLayer | null;
+  /** CSS filter-like effect applied to the layer. */
+  effect?: __esri.Effect | string | null;
+  /** How features are placed on the vertical axis (z). SceneView only. */
+  elevationInfo?: __esri.ElevationInfoProperties | null;
+  /** Feature effect (filter + included/excluded effects). */
+  featureEffect?: __esri.FeatureEffectProperties | null;
+  /** Feature reduction (cluster, binning, selection). */
+  featureReduction?: __esri.FeatureReductionBinning | __esri.FeatureReductionCluster | __esri.FeatureReductionSelection | null;
+  /** Field configurations for popups and UI. */
+  fieldConfigurations?: __esri.FieldConfigurationProperties[] | null;
+  /** Array of field definitions for the layer. */
   fields?: __esri.Field[];
-  geometryType?: 'point' | 'polyline' | 'polygon' | 'multipoint';
+  /** Floor info for floor-aware layers. */
+  floorInfo?: __esri.LayerFloorInfoProperties | null;
+  /** Form template for FeatureForm. */
+  formTemplate?: __esri.FormTemplateProperties | null;
+  /** Geodatabase version for versioned services. */
+  gdbVersion?: string | null;
+  /** Geometry type of features; null for non-spatial tables. */
+  geometryType?: __esri.FeatureLayerProperties['geometryType'];
+  /** Name of the global ID field. */
+  globalIdField?: string | null;
+  /** Whether client-side features have M values. */
+  hasM?: boolean;
+  /** Whether client-side features have Z values. */
+  hasZ?: boolean;
+  /** Historic moment to query. */
+  historicMoment?: Date | __esri.DateProperties | null;
+  /** Unique ID for the layer. */
+  id?: string;
+  /** Label definition (array of LabelClass). */
+  labelingInfo?: __esri.LabelClassProperties[] | null;
+  /** Whether to display labels. */
+  labelsVisible?: boolean;
+  /** Layer ID / index when loading from portalItem or service URL. */
+  layerId?: number | null;
+  /** Whether the layer is included in the legend. */
+  legendEnabled?: boolean;
+  /** How the layer displays in the LayerList. */
+  listMode?: 'show' | 'hide' | 'hide-children';
+  /** Maximum scale (most zoomed in) at which the layer is visible. 0 = no maximum. */
+  maxScale?: number;
+  /** Minimum scale (most zoomed out) at which the layer is visible. 0 = no minimum. */
+  minScale?: number;
+  /** Name of the object ID field. */
   objectIdField?: string;
-  renderer?: __esri.RendererProperties;
-  popupTemplate?: __esri.PopupTemplateProperties;
-  definitionExpression?: string;
-  outFields?: string[];
+  /** Order in which features are drawn (e.g. by field). */
+  orderBy?: __esri.OrderByInfoProperties[] | null;
+  /** Field names to include with each feature (e.g. ["*"]). */
+  outFields?: string[] | null;
+  /** Whether the layer can be persisted in WebMap/WebScene. */
+  persistenceEnabled?: boolean;
+  /** Whether to display popups when features are clicked. */
+  popupEnabled?: boolean;
+  /** Popup template for the layer. */
+  popupTemplate?: __esri.PopupTemplateProperties | null;
+  /** Portal item (e.g. { id }) to load the layer from. */
+  portalItem?: __esri.PortalItemProperties;
+  /** Refresh interval in minutes. 0 = no refresh. */
+  refreshInterval?: number;
+  /** Renderer for styling features. */
+  renderer?: __esri.RendererProperties | null;
+  /** Whether M values will be returned. */
+  returnM?: boolean | null;
+  /** Whether Z values will be returned. */
+  returnZ?: boolean | null;
+  /** Apply perspective scaling to screen-size symbols in SceneView. */
+  screenSizePerspectiveEnabled?: boolean;
+  /** Client-side graphics to create the layer from (alternative to url/portalItem). */
+  source?: __esri.Graphic[] | __esri.Collection<__esri.Graphic>;
+  /** Time extent for the layer. */
+  timeExtent?: __esri.TimeExtentProperties | null;
+  /** Time info (start/end fields, fullTimeExtent). */
+  timeInfo?: __esri.TimeInfoProperties | null;
+  /** Temporary time offset for the layer. */
+  timeOffset?: __esri.TimeIntervalProperties | null;
+  /** Title for the layer (e.g. in Legend, LayerList). */
+  title?: string | null;
+  /** Track info for rendering track data. */
+  trackInfo?: __esri.TrackInfoProperties | null;
+  /** Name of the field holding the type ID for features. */
+  typeIdField?: string | null;
+  /** Array of feature types from the service. */
+  types?: __esri.FeatureTypeProperties[] | null;
+  /** URL of the REST endpoint of the layer or service. */
+  url?: string | null;
+  /** Whether temporal data follows the view's timeExtent. */
+  useViewTime?: boolean;
+  /** Time extent during which the layer is visible. */
+  visibilityTimeExtent?: __esri.TimeExtentProperties | null;
 }
 
 export interface GraphicsLayerProps extends LayerProps {

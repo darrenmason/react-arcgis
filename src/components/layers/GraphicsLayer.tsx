@@ -34,8 +34,8 @@ export function GraphicsLayer({
     config: {
       graphics,
       blendMode,
-      effect: effect as any,
-      elevationInfo: elevationInfo as any,
+      effect,
+      elevationInfo,
       id,
       listMode,
       maxScale,
@@ -43,7 +43,7 @@ export function GraphicsLayer({
       persistenceEnabled,
       screenSizePerspectiveEnabled,
       title,
-      visibilityTimeExtent: visibilityTimeExtent as any,
+      visibilityTimeExtent,
       visible,
       opacity
     },
@@ -53,15 +53,15 @@ export function GraphicsLayer({
 
   usePropertyUpdater(layer, {
     blendMode: { value: blendMode },
-    effect: { value: effect as any, condition: effect !== undefined },
-    elevationInfo: { value: elevationInfo as any, condition: elevationInfo !== undefined },
+    effect: { value: effect as __esri.Effect | null, condition: effect !== undefined },
+    elevationInfo: { value: elevationInfo as __esri.ElevationInfo | null, condition: elevationInfo !== undefined },
     listMode: { value: listMode },
     maxScale: { value: maxScale },
     minScale: { value: minScale },
     persistenceEnabled: { value: persistenceEnabled },
     screenSizePerspectiveEnabled: { value: screenSizePerspectiveEnabled },
     title: { value: title },
-    visibilityTimeExtent: { value: visibilityTimeExtent as any, condition: visibilityTimeExtent !== undefined },
+    visibilityTimeExtent: { value: visibilityTimeExtent as __esri.TimeExtent | null, condition: visibilityTimeExtent !== undefined },
     visible: { value: visible },
     opacity: { value: opacity }
   });
