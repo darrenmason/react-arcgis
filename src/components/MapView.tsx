@@ -14,8 +14,18 @@ export function MapView({
   scale,
   extent,
   rotation,
-  ui,
+  viewpoint,
+  padding,
+  popup,
+  popupEnabled,
+  background,
   constraints,
+  displayFilterEnabled,
+  spatialReference,
+  animationsEnabled,
+  resizeAlign,
+  theme,
+  ui,
   onLoad,
   onViewReady,
   onClick,
@@ -31,19 +41,26 @@ export function MapView({
     'MapView'
   );
 
-  const config: any = {
-    map: map as any,
-    center: center as any,
+  const config: __esri.MapViewProperties = {
+    map: map as __esri.Map | __esri.WebMap | undefined,
+    center: center as __esri.PointProperties | number[] | undefined,
     zoom,
     scale,
-    extent: extent as any,
-    rotation
+    extent: extent as __esri.ExtentProperties | undefined,
+    rotation,
+    viewpoint: viewpoint as __esri.ViewpointProperties | undefined,
+    padding,
+    popup: popup as __esri.PopupProperties | null | undefined,
+    popupEnabled,
+    background: background as __esri.ColorBackgroundProperties | null | undefined,
+    constraints: constraints as __esri.View2DConstraintsProperties | undefined,
+    displayFilterEnabled,
+    spatialReference: spatialReference as __esri.SpatialReferenceProperties | undefined,
+    animationsEnabled,
+    resizeAlign,
+    theme: theme as __esri.ThemeProperties | null | undefined,
+    ui: ui as __esri.UIProperties | undefined
   };
-  
-  // Only include constraints if it's defined to avoid ArcGIS errors
-  if (constraints !== undefined) {
-    config.constraints = constraints as any;
-  }
 
   const { view, isReady } = useEsriView({
     Module: MapViewModule,
@@ -53,10 +70,11 @@ export function MapView({
     onViewReady
   });
 
-  // Configure UI components
+  // Configure UI components (custom components array for removing default UI)
   useEffect(() => {
-    if (view && ui?.components) {
-      ui.components.forEach((component) => {
+    const uiWithComponents = ui as { components?: string[] } | undefined;
+    if (view && uiWithComponents?.components) {
+      uiWithComponents.components.forEach((component: string) => {
         if (component.startsWith('-')) {
           view.ui.remove(component.substring(1));
         }
@@ -65,10 +83,17 @@ export function MapView({
   }, [view, ui]);
 
   usePropertyUpdater(view, {
-    center: { value: center as any, condition: isReady && !!center },
+    center: { value: center as __esri.Point, condition: isReady && center !== undefined },
     zoom: { value: zoom, condition: isReady && zoom !== undefined },
     scale: { value: scale, condition: isReady && scale !== undefined },
-    rotation: { value: rotation, condition: isReady && rotation !== undefined }
+    extent: { value: extent as __esri.Extent, condition: isReady && extent !== undefined },
+    rotation: { value: rotation, condition: isReady && rotation !== undefined },
+    padding: { value: padding, condition: padding !== undefined },
+    popupEnabled: { value: popupEnabled, condition: popupEnabled !== undefined },
+    displayFilterEnabled: { value: displayFilterEnabled, condition: displayFilterEnabled !== undefined },
+    animationsEnabled: { value: animationsEnabled, condition: animationsEnabled !== undefined },
+    resizeAlign: { value: resizeAlign as __esri.View2D['resizeAlign'], condition: resizeAlign !== undefined },
+    theme: { value: theme as __esri.Theme | null | undefined, condition: theme !== undefined }
   });
 
   useEventHandlers(view, [

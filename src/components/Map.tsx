@@ -6,6 +6,7 @@ import { usePropertyUpdater } from '../hooks/usePropertyUpdater';
 
 export function Map({
   basemap = 'topo-vector',
+  focusAreas,
   ground,
   layers,
   onLoad,
@@ -28,6 +29,7 @@ export function Map({
       try {
         const mapInstance = new MapModule({
           basemap,
+          focusAreas,
           ground,
           layers: layers || []
         });
@@ -57,8 +59,9 @@ export function Map({
   }, [MapModule]);
 
   usePropertyUpdater(map, {
-    basemap: { value: basemap as any },
-    ground: { value: ground as any, condition: !!ground }
+    basemap: { value: basemap as any, condition: basemap !== undefined },
+    focusAreas: { value: focusAreas as __esri.FocusAreas | undefined, condition: focusAreas !== undefined },
+    ground: { value: ground as any, condition: ground !== undefined }
   });
 
   // Update layers collection

@@ -7,8 +7,13 @@ import type Layer from '@arcgis/core/layers/Layer';
 export type ViewType = MapView | SceneView;
 
 export interface BaseMapProps {
-  basemap?: string | __esri.Basemap;
+  /** Basemap id, Basemap instance, or BasemapStyle config. See [Map.basemap](https://developers.arcgis.com/javascript/latest/api-reference/esri-Map.html#basemap). */
+  basemap?: string | __esri.Basemap | __esri.BasemapProperties | __esri.BasemapStyle;
+  /** Container of focus areas (SceneView). See [Map.focusAreas](https://developers.arcgis.com/javascript/latest/api-reference/esri-Map.html#focusAreas). */
+  focusAreas?: __esri.FocusAreasProperties;
+  /** Surface properties: "world-elevation", "world-topobathymetry", or Ground instance. */
   ground?: __esri.Ground | __esri.GroundProperties | string;
+  /** Operational layers. */
   layers?: Layer[];
   className?: string;
   style?: React.CSSProperties;
@@ -24,11 +29,29 @@ export interface MapViewProps {
   scale?: number;
   extent?: __esri.ExtentProperties;
   rotation?: number;
-  ui?: {
-    components?: string[];
-    position?: string;
-  };
-  constraints?: __esri.View2DConstraints;
+  viewpoint?: __esri.ViewpointProperties;
+  /** Padding (e.g. { left: 50 }) for center/extent. */
+  padding?: __esri.ViewPadding;
+  /** Popup instance or properties. */
+  popup?: __esri.PopupProperties | null;
+  /** Whether the popup opens on view click. */
+  popupEnabled?: boolean;
+  /** View background (e.g. ColorBackground). */
+  background?: __esri.ColorBackgroundProperties | null;
+  /** Scale/zoom/rotation constraints. */
+  constraints?: __esri.View2DConstraintsProperties;
+  /** Whether display filters are honored for all layers. */
+  displayFilterEnabled?: boolean;
+  /** Spatial reference of the view. */
+  spatialReference?: __esri.SpatialReferenceProperties;
+  /** Whether animations are enabled. */
+  animationsEnabled?: boolean;
+  /** Resize anchor. */
+  resizeAlign?: 'center' | 'left' | 'right' | 'top' | 'bottom' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+  /** Theme for widgets and components. */
+  theme?: __esri.ThemeProperties | null;
+  /** UI config: components to remove (e.g. ["attribution"]) or position. */
+  ui?: __esri.UIProperties & { components?: string[] };
   onLoad?: (view: MapView) => void;
   onViewReady?: (view: MapView) => void;
   onClick?: (event: __esri.ViewClickEvent) => void;
@@ -45,10 +68,24 @@ export interface SceneViewProps {
   zoom?: number;
   scale?: number;
   camera?: __esri.CameraProperties;
+  viewpoint?: __esri.ViewpointProperties;
   viewingMode?: 'global' | 'local';
+  /** Padding for center/extent. */
+  padding?: __esri.ViewPadding;
+  /** Popup instance or properties. */
+  popup?: __esri.PopupProperties | null;
+  popupEnabled?: boolean;
+  /** Environment (lighting, atmosphere). */
+  environment?: __esri.SceneViewEnvironmentProperties;
+  constraints?: __esri.SceneViewConstraintsProperties;
+  displayFilterEnabled?: boolean;
+  spatialReference?: __esri.SpatialReferenceProperties;
+  theme?: __esri.ThemeProperties | null;
+  ui?: __esri.UIProperties;
   onLoad?: (view: SceneView) => void;
   onViewReady?: (view: SceneView) => void;
   onClick?: (event: __esri.ViewClickEvent) => void;
+  onPointerMove?: (event: __esri.ViewPointerMoveEvent) => void;
   className?: string;
   style?: React.CSSProperties;
   children?: React.ReactNode;

@@ -13,10 +13,21 @@ export function SceneView({
   zoom = 10,
   scale,
   camera,
+  viewpoint,
   viewingMode = 'global',
+  padding,
+  popup,
+  popupEnabled,
+  environment,
+  constraints,
+  displayFilterEnabled,
+  spatialReference,
+  theme,
+  ui,
   onLoad,
   onViewReady,
   onClick,
+  onPointerMove,
   className,
   style,
   children
@@ -28,28 +39,49 @@ export function SceneView({
     'SceneView'
   );
 
+  const config: __esri.SceneViewProperties = {
+    map: map as __esri.Map | __esri.WebMap | undefined,
+    center: center as __esri.PointProperties | number[] | undefined,
+    zoom,
+    scale,
+    camera: camera as __esri.CameraProperties | undefined,
+    viewpoint: viewpoint as __esri.ViewpointProperties | undefined,
+    viewingMode,
+    padding,
+    popup: popup as __esri.PopupProperties | null | undefined,
+    popupEnabled,
+    environment: environment as __esri.SceneViewEnvironmentProperties | undefined,
+    constraints: constraints as __esri.SceneViewConstraintsProperties | undefined,
+    displayFilterEnabled,
+    spatialReference: spatialReference as __esri.SpatialReferenceProperties | undefined,
+    theme: theme as __esri.ThemeProperties | null | undefined,
+    ui: ui as __esri.DefaultUIProperties | undefined
+  };
+
   const { view, isReady } = useEsriView({
     Module: SceneViewModule,
     container: containerRef.current,
-    config: {
-      map: map as any,
-      center: center as any,
-      zoom,
-      scale,
-      camera: camera as any,
-      viewingMode
-    },
+    config,
     onLoad,
     onViewReady
   });
 
   usePropertyUpdater(view, {
-    camera: { value: camera as any, condition: isReady && !!camera }
+    camera: { value: camera as __esri.Camera, condition: isReady && camera !== undefined },
+    center: { value: center as __esri.Point, condition: isReady && center !== undefined },
+    zoom: { value: zoom, condition: isReady && zoom !== undefined },
+    scale: { value: scale, condition: isReady && scale !== undefined },
+    padding: { value: padding, condition: padding !== undefined },
+    popupEnabled: { value: popupEnabled, condition: popupEnabled !== undefined },
+    displayFilterEnabled: { value: displayFilterEnabled, condition: displayFilterEnabled !== undefined },
+    theme: { value: theme as __esri.Theme | null | undefined, condition: theme !== undefined }
   });
 
   useEventHandlers(view, [
-    { eventName: 'click', handler: onClick }
+    { eventName: 'click', handler: onClick },
+    { eventName: 'pointer-move', handler: onPointerMove }
   ]);
+
 
   return (
     <div

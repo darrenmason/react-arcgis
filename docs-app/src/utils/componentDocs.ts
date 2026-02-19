@@ -40,6 +40,12 @@ function App() {
         description: 'The basemap style to use. Common values: "streets-vector", "topo-vector", "gray-vector", "satellite", etc.'
       },
       {
+        name: 'focusAreas',
+        type: 'FocusAreasProperties',
+        required: false,
+        description: 'Container of focus areas (SceneView). See Map.focusAreas in the API.'
+      },
+      {
         name: 'ground',
         type: 'string',
         required: false,
@@ -91,36 +97,28 @@ function MyMap() {
   );
 }`,
     props: [
-      {
-        name: 'center',
-        type: '[number, number]',
-        required: false,
-        description: 'Initial center point as [longitude, latitude]'
-      },
-      {
-        name: 'zoom',
-        type: 'number',
-        required: false,
-        description: 'Initial zoom level (typically 1-20)'
-      },
-      {
-        name: 'extent',
-        type: 'Extent',
-        required: false,
-        description: 'Initial extent of the map view'
-      },
-      {
-        name: 'onClick',
-        type: '(event: ViewClickEvent) => void',
-        required: false,
-        description: 'Callback for map click events'
-      },
-      {
-        name: 'onLoad',
-        type: '(view: MapView) => void',
-        required: false,
-        description: 'Callback when the view is loaded'
-      }
+      { name: 'map', type: 'Map | WebMap', required: false, description: 'Map instance (from parent Map)' },
+      { name: 'center', type: '[number, number] | PointProperties', required: false, description: 'Initial center as [lon, lat] or Point' },
+      { name: 'zoom', type: 'number', required: false, description: 'Initial zoom level (typically 1-20)' },
+      { name: 'scale', type: 'number', required: false, description: 'Map scale' },
+      { name: 'extent', type: 'ExtentProperties', required: false, description: 'Initial extent' },
+      { name: 'rotation', type: 'number', required: false, description: 'Rotation in degrees' },
+      { name: 'viewpoint', type: 'ViewpointProperties', required: false, description: 'Initial viewpoint' },
+      { name: 'padding', type: 'ViewPadding', required: false, description: 'Padding for center/extent' },
+      { name: 'popup', type: 'PopupProperties', required: false, description: 'Popup instance or properties' },
+      { name: 'popupEnabled', type: 'boolean', required: false, description: 'Whether popup opens on click' },
+      { name: 'background', type: 'ColorBackgroundProperties', required: false, description: 'View background' },
+      { name: 'constraints', type: 'View2DConstraintsProperties', required: false, description: 'Scale/zoom/rotation constraints' },
+      { name: 'displayFilterEnabled', type: 'boolean', required: false, description: 'Honor display filters for all layers' },
+      { name: 'spatialReference', type: 'SpatialReferenceProperties', required: false, description: 'View spatial reference' },
+      { name: 'animationsEnabled', type: 'boolean', required: false, description: 'Whether animations are enabled' },
+      { name: 'resizeAlign', type: "'center' | 'left' | 'right' | 'top' | 'bottom' | 'top-left' | ...", required: false, description: 'Resize anchor' },
+      { name: 'theme', type: 'ThemeProperties', required: false, description: 'Theme for widgets' },
+      { name: 'ui', type: 'UIProperties & { components?: string[] }', required: false, description: 'UI config; components to remove' },
+      { name: 'onClick', type: '(event: ViewClickEvent) => void', required: false, description: 'Map click callback' },
+      { name: 'onPointerMove', type: '(event: ViewPointerMoveEvent) => void', required: false, description: 'Pointer move callback' },
+      { name: 'onLoad', type: '(view: MapView) => void', required: false, description: 'Callback when view is loaded' },
+      { name: 'onViewReady', type: '(view: MapView) => void', required: false, description: 'Callback when view is ready' }
     ],
     instructions: [
       'Must be a child of the Map component',
@@ -370,10 +368,17 @@ function MapWithZoom() {
     props: [
       {
         name: 'position',
-        type: 'string',
+        type: 'string | UIAddPosition',
         required: false,
-        default: "'top-right'",
+        default: "'top-left'",
         description: 'Position of the widget. Options: "top-left", "top-right", "bottom-left", "bottom-right"'
+      },
+      {
+        name: 'layout',
+        type: "'vertical' | 'horizontal'",
+        required: false,
+        default: "'vertical'",
+        description: 'Layout of zoom buttons'
       },
       {
         name: 'onLoad',
@@ -890,6 +895,94 @@ function GeoJSONMap() {
     ]
   },
   {
+    name: 'CSVLayer',
+    description: 'Displays point data from a CSV file. Supports popups, styling, and queries.',
+    category: 'Layers',
+    exampleCode: `import { Map, MapView, CSVLayer } from 'react-arcgis';
+
+function CSVMap() {
+  return (
+    <Map basemap="gray-vector">
+      <MapView center={[-118, 34]} zoom={8}>
+        <CSVLayer
+          url="https://example.com/points.csv"
+          latitudeField="lat"
+          longitudeField="lon"
+        />
+      </MapView>
+    </Map>
+  );
+}`,
+    props: [
+      { name: 'url', type: 'string', required: false, description: 'URL of the CSV file or blob URL' },
+      { name: 'portalItem', type: 'PortalItemProperties', required: false, description: 'Portal item for the CSV file' },
+      { name: 'latitudeField', type: 'string', required: false, description: 'Name of the latitude column' },
+      { name: 'longitudeField', type: 'string', required: false, description: 'Name of the longitude column' },
+      { name: 'delimiter', type: 'string', required: false, description: 'Column delimiter' },
+      { name: 'fields', type: 'Field[]', required: false, description: 'Field definitions' },
+      { name: 'renderer', type: 'Renderer', required: false, description: 'Renderer for styling' },
+      { name: 'popupTemplate', type: 'PopupTemplate', required: false, description: 'Popup template' },
+      { name: 'definitionExpression', type: 'string', required: false, description: 'SQL where clause to filter features' },
+      { name: 'blendMode', type: 'string', required: false, description: 'Blend mode' },
+      { name: 'effect', type: 'Effect | string', required: false, description: 'Layer effect' },
+      { name: 'elevationInfo', type: 'ElevationInfo', required: false, description: 'Vertical placement (SceneView)' },
+      { name: 'featureEffect', type: 'FeatureEffect', required: false, description: 'Feature effect' },
+      { name: 'featureReduction', type: 'FeatureReductionBinning | FeatureReductionCluster | FeatureReductionSelection', required: false, description: 'Feature reduction' },
+      { name: 'labelingInfo', type: 'LabelClass[]', required: false, description: 'Label definition' },
+      { name: 'id', type: 'string', required: false, description: 'Layer ID' },
+      { name: 'listMode', type: "'show' | 'hide' | 'hide-children'", required: false, description: 'LayerList display' },
+      { name: 'maxScale', type: 'number', required: false, description: 'Maximum scale visibility' },
+      { name: 'minScale', type: 'number', required: false, description: 'Minimum scale visibility' },
+      { name: 'persistenceEnabled', type: 'boolean', required: false, description: 'Persist in WebMap/WebScene' },
+      { name: 'refreshInterval', type: 'number', required: false, description: 'Refresh interval in minutes' },
+      { name: 'title', type: 'string', required: false, description: 'Layer title' },
+      { name: 'visibilityTimeExtent', type: 'TimeExtent', required: false, description: 'Time extent visibility' },
+      { name: 'visible', type: 'boolean', required: false, description: 'Whether visible' },
+      { name: 'opacity', type: 'number', required: false, description: 'Opacity (0-1)' },
+      { name: 'onLoad', type: '(layer: CSVLayer) => void', required: false, description: 'Callback when layer is loaded' }
+    ],
+    instructions: [
+      'Must be a child of MapView or SceneView',
+      'Provide url (or portalItem). Set latitudeField/longitudeField if columns are not x/y.',
+      'CSV coordinates must be in WGS84.'
+    ]
+  },
+  {
+    name: 'GroupLayer',
+    description: 'A layer that groups other layers. Child layers can be toggled independently or inherited from the group.',
+    category: 'Layers',
+    exampleCode: `import { Map, MapView, GroupLayer, FeatureLayer } from 'react-arcgis';
+
+function GroupedLayersMap() {
+  return (
+    <Map basemap="gray-vector">
+      <MapView center={[-118, 34]} zoom={10}>
+        <GroupLayer title="My group" visibilityMode="independent">
+          {/* Add layers via map + useLayer; or pass layers prop with layer instances */}
+        </GroupLayer>
+      </MapView>
+    </Map>
+  );
+}`,
+    props: [
+      { name: 'layers', type: 'Layer[]', required: false, description: 'Child layer instances' },
+      { name: 'visibilityMode', type: "'independent' | 'inherited' | 'exclusive'", required: false, default: "'independent'", description: 'How child visibility is determined' },
+      { name: 'id', type: 'string', required: false, description: 'Layer ID' },
+      { name: 'listMode', type: "'show' | 'hide' | 'hide-children'", required: false, description: 'LayerList display' },
+      { name: 'maxScale', type: 'number', required: false, description: 'Maximum scale visibility' },
+      { name: 'minScale', type: 'number', required: false, description: 'Minimum scale visibility' },
+      { name: 'title', type: 'string', required: false, description: 'Layer title' },
+      { name: 'visible', type: 'boolean', required: false, description: 'Whether visible' },
+      { name: 'opacity', type: 'number', required: false, description: 'Opacity (0-1)' },
+      { name: 'onLoad', type: '(layer: GroupLayer) => void', required: false, description: 'Callback when layer is loaded' }
+    ],
+    instructions: [
+      'Must be a child of MapView or SceneView',
+      'Pass layers array of layer instances, or add child layer components that receive map from context',
+      'visibilityMode: independent (each layer toggles), inherited (follow group), or exclusive (one at a time)'
+    ]
+  },
+  {
     name: 'SceneView',
     description: 'A 3D map view component that displays a Map instance in 3D. Used for 3D visualizations and scenes.',
     category: 'Core Components',
@@ -913,18 +1006,26 @@ function Scene3D() {
   );
 }`,
     props: [
-      {
-        name: 'camera',
-        type: 'Camera',
-        required: false,
-        description: 'Initial camera position and orientation'
-      },
-      {
-        name: 'onLoad',
-        type: '(view: SceneView) => void',
-        required: false,
-        description: 'Callback when the view is loaded'
-      }
+      { name: 'map', type: 'Map | WebMap', required: false, description: 'Map instance (from parent Map)' },
+      { name: 'center', type: '[number, number] | PointProperties', required: false, description: 'Initial center' },
+      { name: 'zoom', type: 'number', required: false, description: 'Initial zoom' },
+      { name: 'scale', type: 'number', required: false, description: 'Map scale' },
+      { name: 'camera', type: 'CameraProperties', required: false, description: 'Initial camera position and orientation' },
+      { name: 'viewpoint', type: 'ViewpointProperties', required: false, description: 'Initial viewpoint' },
+      { name: 'viewingMode', type: "'global' | 'local'", required: false, description: 'Viewing mode' },
+      { name: 'padding', type: 'ViewPadding', required: false, description: 'Padding for center/extent' },
+      { name: 'popup', type: 'PopupProperties', required: false, description: 'Popup instance or properties' },
+      { name: 'popupEnabled', type: 'boolean', required: false, description: 'Whether popup opens on click' },
+      { name: 'environment', type: 'SceneViewEnvironmentProperties', required: false, description: 'Lighting, atmosphere' },
+      { name: 'constraints', type: 'SceneViewConstraintsProperties', required: false, description: 'Camera constraints' },
+      { name: 'displayFilterEnabled', type: 'boolean', required: false, description: 'Honor display filters' },
+      { name: 'spatialReference', type: 'SpatialReferenceProperties', required: false, description: 'View spatial reference' },
+      { name: 'theme', type: 'ThemeProperties', required: false, description: 'Theme for widgets' },
+      { name: 'ui', type: 'DefaultUIProperties', required: false, description: 'Default UI config' },
+      { name: 'onClick', type: '(event: ViewClickEvent) => void', required: false, description: 'Map click callback' },
+      { name: 'onPointerMove', type: '(event: ViewPointerMoveEvent) => void', required: false, description: 'Pointer move callback' },
+      { name: 'onLoad', type: '(view: SceneView) => void', required: false, description: 'Callback when view is loaded' },
+      { name: 'onViewReady', type: '(view: SceneView) => void', required: false, description: 'Callback when view is ready' }
     ],
     instructions: [
       'Must be a child of the Map component',
