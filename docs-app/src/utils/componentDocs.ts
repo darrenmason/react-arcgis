@@ -440,9 +440,121 @@ function TileMap() {
     props: [
       {
         name: 'url',
+        type: 'string | null',
+        required: false,
+        description: 'URL of the REST endpoint of the tile service'
+      },
+      {
+        name: 'portalItem',
+        type: 'PortalItemProperties',
+        required: false,
+        description: 'Portal item (e.g. { id }) to load the layer from ArcGIS Online or Enterprise'
+      },
+      {
+        name: 'apiKey',
+        type: 'string | null',
+        required: false,
+        description: 'API key appended to all requests for the layer'
+      },
+      {
+        name: 'blendMode',
         type: 'string',
         required: false,
-        description: 'URL to the tile service'
+        description: 'Blend mode (e.g. "normal", "multiply", "screen"). See TileLayer blendMode in the API.'
+      },
+      {
+        name: 'copyright',
+        type: 'string | null',
+        required: false,
+        description: 'Copyright text as defined by the service'
+      },
+      {
+        name: 'customParameters',
+        type: 'Record<string, string> | null',
+        required: false,
+        description: 'Custom parameters appended to the URL of all resources fetched by the layer'
+      },
+      {
+        name: 'effect',
+        type: 'Effect | string | null',
+        required: false,
+        description: 'CSS filter-like effect applied to the layer'
+      },
+      {
+        name: 'id',
+        type: 'string',
+        required: false,
+        description: 'Unique ID for the layer'
+      },
+      {
+        name: 'legendEnabled',
+        type: 'boolean',
+        required: false,
+        default: 'true',
+        description: 'Whether the layer is included in the legend'
+      },
+      {
+        name: 'listMode',
+        type: '"show" | "hide" | "hide-children"',
+        required: false,
+        description: 'How the layer displays in the LayerList component'
+      },
+      {
+        name: 'maxScale',
+        type: 'number',
+        required: false,
+        description: 'Maximum scale (most zoomed in) at which the layer is visible. 0 = no maximum.'
+      },
+      {
+        name: 'minScale',
+        type: 'number',
+        required: false,
+        description: 'Minimum scale (most zoomed out) at which the layer is visible. 0 = no minimum.'
+      },
+      {
+        name: 'persistenceEnabled',
+        type: 'boolean',
+        required: false,
+        default: 'true',
+        description: 'Enable persistence of the layer in a WebMap or WebScene'
+      },
+      {
+        name: 'refreshInterval',
+        type: 'number',
+        required: false,
+        default: '0',
+        description: 'Refresh interval in minutes. 0 = no refresh.'
+      },
+      {
+        name: 'resampling',
+        type: 'boolean',
+        required: false,
+        default: 'true',
+        description: 'When true, tiles are resampled at lower LOD when not available'
+      },
+      {
+        name: 'tileInfo',
+        type: 'TileInfo',
+        required: false,
+        description: 'Tiling scheme for the layer'
+      },
+      {
+        name: 'tileServers',
+        type: 'string[]',
+        required: false,
+        description: 'Array of tile server URLs for changing map tiles'
+      },
+      {
+        name: 'title',
+        type: 'string | null',
+        required: false,
+        description: 'Title for the layer (e.g. in Legend, LayerList)'
+      },
+      {
+        name: 'visibilityTimeExtent',
+        type: 'TimeExtentProperties | null',
+        required: false,
+        description: 'Time extent during which the layer is visible'
       },
       {
         name: 'opacity',
@@ -467,7 +579,7 @@ function TileMap() {
     ],
     instructions: [
       'Must be a child of MapView or SceneView',
-      'Provide a valid tile service URL',
+      'Provide url or portalItem for the tile service',
       'Tile layers are cached and load quickly'
     ]
   },
