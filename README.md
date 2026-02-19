@@ -234,7 +234,7 @@ Contributions are welcome! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for g
 
 ## License
 
-MIT © [Your Name]
+MIT © Darren Mason
 
 ## Resources
 

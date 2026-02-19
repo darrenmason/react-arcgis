@@ -1,0 +1,25 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-98, 39] },
+      "properties": { "name": "Center", "category": "A" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-95, 41] },
+      "properties": { "name": "North", "category": "B" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-101, 35] },
+      "properties": { "name": "South", "category": "A" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-92, 38] },
+      "properties": { "name": "East", "category": "B" }
+    }
+  ]
+}

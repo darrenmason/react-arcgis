@@ -16,7 +16,8 @@ import {
   WebScene,
   useView,
   useGraphic,
-  useQueryFeatures
+  useQueryFeatures,
+  useEsriModule
 } from 'react-arcgis';
 import './LiveExample.css';
 
@@ -218,14 +219,46 @@ function LayerListExample() {
 }
 
 function LegendExample() {
+  const { Module: GeoJSONLayerModule } = useEsriModule<__esri.GeoJSONLayer>(
+    () => import('@arcgis/core/layers/GeoJSONLayer'),
+    'GeoJSONLayer'
+  );
+  const [layers, setLayers] = useState<__esri.Layer[]>([]);
+
+  useEffect(() => {
+    if (!GeoJSONLayerModule) return;
+    // Bundled demo data (no external service) – see public/demo-data/legend-demo.geojson
+    const url = new URL('/demo-data/legend-demo.geojson', window.location.href).href;
+    const layer = new GeoJSONLayerModule({
+      url,
+      renderer: {
+        type: 'unique-value',
+        field: 'category',
+        uniqueValueInfos: [
+          { value: 'A', symbol: { type: 'simple-marker', color: [66, 135, 245], size: 12, outline: { color: [255, 255, 255], width: 2 } } },
+          { value: 'B', symbol: { type: 'simple-marker', color: [245, 66, 108], size: 12, outline: { color: [255, 255, 255], width: 2 } } }
+        ]
+      } as __esri.UniqueValueRendererProperties
+    });
+    setLayers([layer]);
+    return () => {
+      layer.destroy();
+    };
+  }, [GeoJSONLayerModule]);
+
+  if (layers.length === 0) {
+    return (
+      <div style={{ height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #e0e0e0', borderRadius: '8px' }}>
+        Loading map…
+      </div>
+    );
+  }
+
   return (
     <div style={{ height: '400px', border: '1px solid #e0e0e0', borderRadius: '8px', overflow: 'visible', position: 'relative' }}>
-      <Map basemap="gray-vector">
-        <MapView center={[-118, 34]} zoom={10} style={{ height: '100%', width: '100%' }}>
-          <FeatureLayer
-            url="https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Major_Cities/FeatureServer/0"
-          />
-          <Legend position="bottom-left" />
+      <Map basemap="gray-vector" layers={layers}>
+        <MapView center={[-98, 39]} zoom={4} style={{ height: '100%', width: '100%' }}>
+          <Legend position="bottom-left" style="card" />
         </MapView>
       </Map>
     </div>
