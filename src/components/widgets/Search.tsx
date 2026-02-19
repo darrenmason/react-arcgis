@@ -1,19 +1,13 @@
+import React from 'react';
 import type EsriSearch from '@arcgis/core/widgets/Search';
 import { useView } from '../../context/ViewContext';
 import { useEsriModule } from '../../hooks/useEsriModule';
 import { useWidget } from '../../hooks/useWidget';
 
-export interface SearchProps {
+export interface SearchProps extends Omit<__esri.widgetsSearchProperties, 'view'> {
   view?: __esri.MapView | __esri.SceneView;
   position?: string | __esri.UIAddPosition;
-  sources?: __esri.SearchSource[];
-  includeDefaultSources?: boolean;
-  searchAllEnabled?: boolean;
-  suggestionsEnabled?: boolean;
-  locationEnabled?: boolean;
-  popupEnabled?: boolean;
-  resultGraphicEnabled?: boolean;
-  onSearchComplete?: (event: any) => void;
+  onSearchComplete?: (event: __esri.SearchSearchCompleteEvent) => void;
   onSearchClear?: () => void;
   onLoad?: (widget: EsriSearch) => void;
 }
@@ -35,16 +29,10 @@ export interface SearchProps {
 export function Search({
   view: propView,
   position = 'top-right',
-  sources,
-  includeDefaultSources = true,
-  searchAllEnabled = true,
-  suggestionsEnabled = true,
-  locationEnabled = true,
-  popupEnabled = true,
-  resultGraphicEnabled = true,
   onSearchComplete,
   onSearchClear,
-  onLoad
+  onLoad,
+  ...config
 }: SearchProps) {
   const contextView = useView();
   const view = propView || contextView.view;
@@ -57,31 +45,22 @@ export function Search({
   const { widget } = useWidget({
     Module,
     view,
-    config: {
-      sources,
-      includeDefaultSources,
-      searchAllEnabled,
-      suggestionsEnabled,
-      locationEnabled,
-      popupEnabled,
-      resultGraphicEnabled
-    },
+    config: { ...config },
     position,
     onLoad
   });
 
-  // Event handlers
   React.useEffect(() => {
     if (!widget) return;
 
     const handles: __esri.Handle[] = [];
 
     if (onSearchComplete) {
-      handles.push((widget as any).on('search-complete', onSearchComplete));
+      handles.push(widget.on('search-complete', onSearchComplete));
     }
 
     if (onSearchClear) {
-      handles.push((widget as any).on('search-clear', onSearchClear));
+      handles.push(widget.on('search-clear', onSearchClear));
     }
 
     return () => {
@@ -91,8 +70,5 @@ export function Search({
 
   return null;
 }
-
-// Import React for useEffect
-import React from 'react';
 
 export default Search;

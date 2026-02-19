@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import type Portal from '@arcgis/core/portal/Portal';
 import { useEsriModule } from './useEsriModule';
 
-export interface UsePortalOptions {
+export interface UsePortalOptions extends Partial<__esri.PortalProperties> {
   url?: string;
   authMode?: 'immediate' | 'auto' | 'no-prompt';
 }
@@ -57,7 +57,7 @@ export function usePortal(options: UsePortalOptions = {}) {
         setLoading(true);
         setError(null);
 
-        const portalInstance = new PortalModule({ url, authMode });
+        const portalInstance = new PortalModule({ ...options, url: options.url ?? url, authMode: options.authMode ?? authMode });
         await portalInstance.load();
 
         if (!mounted) return;

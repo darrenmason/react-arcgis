@@ -3,12 +3,9 @@ import type { ViewType } from '../types';
 import { useEsriModule } from './useEsriModule';
 import { useWidget } from './useWidget';
 
-export interface UseLayerListOptions {
+export interface UseLayerListOptions extends Omit<__esri.LayerListProperties, 'view'> {
   view: ViewType | null;
   position?: string | __esri.UIAddPosition;
-  listItemCreatedFunction?: (event: any) => void;
-  selectionEnabled?: boolean;
-  visibilityAppearance?: 'default' | 'checkbox';
   onLoad?: (widget: LayerList) => void;
 }
 

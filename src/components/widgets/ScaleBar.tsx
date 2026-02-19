@@ -2,12 +2,11 @@ import type EsriScaleBar from '@arcgis/core/widgets/ScaleBar';
 import { useView } from '../../context/ViewContext';
 import { useEsriModule } from '../../hooks/useEsriModule';
 import { useWidget } from '../../hooks/useWidget';
+import { usePropertyUpdater } from '../../hooks/usePropertyUpdater';
 
-export interface ScaleBarProps {
+export interface ScaleBarProps extends Omit<__esri.ScaleBarProperties, 'view'> {
   view?: __esri.MapView | __esri.SceneView;
   position?: string | __esri.UIAddPosition;
-  unit?: 'metric' | 'imperial' | 'dual';
-  style?: 'ruler' | 'line';
   onLoad?: (widget: EsriScaleBar) => void;
 }
 
@@ -28,9 +27,8 @@ export interface ScaleBarProps {
 export function ScaleBar({
   view: propView,
   position = 'bottom-left',
-  unit = 'metric',
-  style = 'line',
-  onLoad
+  onLoad,
+  ...config
 }: ScaleBarProps) {
   const contextView = useView();
   const view = propView || contextView.view;
@@ -40,15 +38,19 @@ export function ScaleBar({
     'ScaleBar'
   );
 
-  useWidget({
+  const { widget } = useWidget({
     Module,
     view,
-    config: {
-      unit,
-      style
-    },
+    config: { ...config },
     position,
     onLoad
+  });
+
+  usePropertyUpdater(widget, {
+    unit: { value: config.unit, condition: config.unit !== undefined },
+    style: { value: config.style, condition: config.style !== undefined },
+    label: { value: config.label, condition: config.label !== undefined },
+    icon: { value: config.icon, condition: config.icon !== undefined }
   });
 
   return null;

@@ -3,10 +3,9 @@ import type { ViewType } from '../types';
 import { useEsriModule } from './useEsriModule';
 import { useWidget } from './useWidget';
 
-export interface UseBasemapToggleOptions {
+export interface UseBasemapToggleOptions extends Omit<__esri.BasemapToggleProperties, 'view'> {
   view: ViewType | null;
   position?: string | __esri.UIAddPosition;
-  nextBasemap?: string | __esri.Basemap;
   onLoad?: (widget: BasemapToggle) => void;
 }
 

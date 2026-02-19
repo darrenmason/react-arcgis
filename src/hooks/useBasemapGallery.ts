@@ -2,17 +2,16 @@ import { useState, useEffect } from 'react';
 import type BasemapGallery from '@arcgis/core/widgets/BasemapGallery';
 import type { ViewType } from '../types';
 
-export interface UseBasemapGalleryOptions {
+export interface UseBasemapGalleryOptions extends Omit<__esri.BasemapGalleryProperties, 'view'> {
   view: ViewType | null;
-  position?: string;
-  source?: __esri.PortalBasemapsSource | __esri.LocalBasemapsSource;
+  position?: string | __esri.UIAddPosition;
+  /** When true, wrap the gallery in an Expand widget (default). When false, add the gallery directly to the view UI. */
+  useExpand?: boolean;
+  onLoad?: (widget: BasemapGallery) => void;
 }
 
-export const useBasemapGallery = ({
-  view,
-  position = 'top-right',
-  source
-}: UseBasemapGalleryOptions) => {
+export const useBasemapGallery = (options: UseBasemapGalleryOptions) => {
+  const { view, position = 'top-right', useExpand = true, onLoad, ...config } = options;
   const [gallery, setGallery] = useState<BasemapGallery | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -20,30 +19,37 @@ export const useBasemapGallery = ({
     if (!view) return;
 
     let mounted = true;
+    let galleryInstance: BasemapGallery | null = null;
+    let expandInstance: __esri.Expand | null = null;
 
     const initializeGallery = async () => {
       try {
         setLoading(true);
-        const [BasemapGallery, Expand] = await Promise.all([
+        const [BasemapGalleryModule, ExpandModule] = await Promise.all([
           import('@arcgis/core/widgets/BasemapGallery'),
           import('@arcgis/core/widgets/Expand')
         ]);
 
         if (!mounted || !view) return;
 
-        const basemapGallery = new BasemapGallery.default({
-          view: view as any,
-          source: source as any
+        galleryInstance = new BasemapGalleryModule.default({
+          view: view as __esri.MapView | __esri.SceneView,
+          ...config
         });
 
-        const expand = new Expand.default({
-          view: view as any,
-          content: basemapGallery,
-          expandIcon: 'basemap'
-        });
+        if (useExpand) {
+          expandInstance = new ExpandModule.default({
+            view: view as __esri.MapView | __esri.SceneView,
+            content: galleryInstance,
+            expandIcon: 'basemap'
+          });
+          view.ui.add(expandInstance, position);
+        } else {
+          view.ui.add(galleryInstance as unknown as __esri.Widget, position);
+        }
 
-        view.ui.add(expand, position);
-        setGallery(basemapGallery);
+        setGallery(galleryInstance);
+        onLoad?.(galleryInstance);
       } catch (error) {
         console.error('Error initializing basemap gallery:', error);
       } finally {
@@ -57,11 +63,17 @@ export const useBasemapGallery = ({
 
     return () => {
       mounted = false;
-      if (gallery) {
-        gallery.destroy();
+      if (expandInstance && view?.ui) {
+        view.ui.remove(expandInstance);
+        expandInstance.destroy();
+      } else if (galleryInstance && view?.ui) {
+        view.ui.remove(galleryInstance as unknown as __esri.Widget);
+      }
+      if (galleryInstance) {
+        galleryInstance.destroy();
       }
     };
-  }, [view]);
+  }, [view, position, useExpand]);
 
   return { gallery, loading };
 };

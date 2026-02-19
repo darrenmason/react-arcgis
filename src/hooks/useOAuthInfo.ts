@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useEsriModule } from './useEsriModule';
 
-export interface OAuthInfoOptions {
+export interface OAuthInfoOptions extends Partial<__esri.OAuthInfoProperties> {
   appId: string;
   portalUrl?: string;
   popup?: boolean;

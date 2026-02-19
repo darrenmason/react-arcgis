@@ -3,11 +3,9 @@ import type { ViewType } from '../types';
 import { useEsriModule } from './useEsriModule';
 import { useWidget } from './useWidget';
 
-export interface UseScaleBarOptions {
+export interface UseScaleBarOptions extends Omit<__esri.ScaleBarProperties, 'view'> {
   view: ViewType | null;
   position?: string | __esri.UIAddPosition;
-  unit?: 'metric' | 'imperial' | 'dual';
-  style?: 'ruler' | 'line';
   onLoad?: (widget: ScaleBar) => void;
 }
 

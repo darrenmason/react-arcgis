@@ -2,13 +2,11 @@ import type EsriLayerList from '@arcgis/core/widgets/LayerList';
 import { useView } from '../../context/ViewContext';
 import { useEsriModule } from '../../hooks/useEsriModule';
 import { useWidget } from '../../hooks/useWidget';
+import { usePropertyUpdater } from '../../hooks/usePropertyUpdater';
 
-export interface LayerListProps {
+export interface LayerListProps extends Omit<__esri.LayerListProperties, 'view'> {
   view?: __esri.MapView | __esri.SceneView;
   position?: string | __esri.UIAddPosition;
-  listItemCreatedFunction?: (event: any) => void;
-  selectionEnabled?: boolean;
-  visibilityAppearance?: 'default' | 'checkbox';
   onLoad?: (widget: EsriLayerList) => void;
 }
 
@@ -26,10 +24,8 @@ export interface LayerListProps {
 export function LayerList({
   view: propView,
   position = 'top-right',
-  listItemCreatedFunction,
-  selectionEnabled,
-  visibilityAppearance,
-  onLoad
+  onLoad,
+  ...config
 }: LayerListProps) {
   const contextView = useView();
   const view = propView || contextView.view;
@@ -39,16 +35,28 @@ export function LayerList({
     'LayerList'
   );
 
-  useWidget({
+  const { widget } = useWidget({
     Module,
     view,
-    config: {
-      listItemCreatedFunction,
-      selectionEnabled,
-      visibilityAppearance
-    },
+    config: { ...config },
     position,
     onLoad
+  });
+
+  usePropertyUpdater(widget, {
+    listItemCreatedFunction: { value: config.listItemCreatedFunction as __esri.LayerListListItemCreatedHandler | null, condition: config.listItemCreatedFunction !== undefined },
+    visibilityAppearance: { value: config.visibilityAppearance, condition: config.visibilityAppearance !== undefined },
+    selectionMode: { value: config.selectionMode, condition: config.selectionMode !== undefined },
+    collapsed: { value: config.collapsed, condition: config.collapsed !== undefined },
+    dragEnabled: { value: config.dragEnabled, condition: config.dragEnabled !== undefined },
+    filterPlaceholder: { value: config.filterPlaceholder, condition: config.filterPlaceholder !== undefined },
+    filterText: { value: config.filterText, condition: config.filterText !== undefined },
+    headingLevel: { value: config.headingLevel, condition: config.headingLevel !== undefined },
+    label: { value: config.label, condition: config.label !== undefined },
+    icon: { value: config.icon, condition: config.icon !== undefined },
+    minDragEnabledItems: { value: config.minDragEnabledItems, condition: config.minDragEnabledItems !== undefined },
+    minFilterItems: { value: config.minFilterItems, condition: config.minFilterItems !== undefined },
+    visibleElements: { value: config.visibleElements as __esri.LayerListVisibleElements | undefined, condition: config.visibleElements !== undefined }
   });
 
   return null;

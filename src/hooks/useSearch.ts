@@ -1,26 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import type Search from '@arcgis/core/widgets/Search';
 import type { ViewType } from '../types';
 
-export interface UseSearchOptions {
+export interface UseSearchOptions extends Omit<__esri.widgetsSearchProperties, 'view'> {
   view: ViewType | null;
-  position?: string;
-  sources?: __esri.SearchSource[];
-  includeDefaultSources?: boolean;
-  searchAllEnabled?: boolean;
-  suggestionEnabled?: boolean;
+  position?: string | __esri.UIAddPosition;
+  onLoad?: (widget: Search) => void;
 }
 
-export const useSearch = ({
-  view,
-  position = 'top-right',
-  sources,
-  includeDefaultSources = true,
-  searchAllEnabled = true,
-  suggestionEnabled = true
-}: UseSearchOptions) => {
+export const useSearch = (options: UseSearchOptions) => {
+  const { view, position = 'top-right', onLoad, ...config } = options;
   const [search, setSearch] = useState<Search | null>(null);
   const [loading, setLoading] = useState(true);
+  const widgetRef = useRef<Search | null>(null);
 
   useEffect(() => {
     if (!view) return;
@@ -30,22 +22,26 @@ export const useSearch = ({
     const initializeSearch = async () => {
       try {
         setLoading(true);
-        const [Search] = await Promise.all([
+        const [SearchModule] = await Promise.all([
           import('@arcgis/core/widgets/Search')
         ]);
 
         if (!mounted || !view) return;
 
-        const searchWidget = new Search.default({
-          view: view as any,
-          sources: sources as any,
-          includeDefaultSources,
-          searchAllEnabled,
-          suggestionsEnabled: suggestionEnabled
+        const searchInstance = new SearchModule.default({
+          view: view as __esri.MapView | __esri.SceneView,
+          ...config
         });
 
-        view.ui.add(searchWidget, position);
-        setSearch(searchWidget);
+        if (!mounted) {
+          searchInstance.destroy();
+          return;
+        }
+
+        widgetRef.current = searchInstance;
+        view.ui.add(searchInstance as unknown as __esri.Widget, position);
+        setSearch(searchInstance);
+        onLoad?.(searchInstance);
       } catch (error) {
         console.error('Error initializing search widget:', error);
       } finally {
@@ -59,12 +55,14 @@ export const useSearch = ({
 
     return () => {
       mounted = false;
-      if (search) {
-        view.ui.remove(search);
-        search.destroy();
+      const current = widgetRef.current;
+      widgetRef.current = null;
+      if (current && view?.ui) {
+        view.ui.remove(current as unknown as __esri.Widget);
+        current.destroy();
       }
     };
-  }, [view]);
+  }, [view, position]);
 
   return { search, loading };
 };

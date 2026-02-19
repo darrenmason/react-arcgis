@@ -3,11 +3,9 @@ import type { ViewType } from '../types';
 import { useEsriModule } from './useEsriModule';
 import { useWidget } from './useWidget';
 
-export interface UseLegendOptions {
+export interface UseLegendOptions extends Omit<__esri.LegendProperties, 'view'> {
   view: ViewType | null;
   position?: string | __esri.UIAddPosition;
-  style?: 'classic' | 'card';
-  respectLayerVisibility?: boolean;
   onLoad?: (widget: Legend) => void;
 }
 
