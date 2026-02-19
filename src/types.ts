@@ -75,8 +75,30 @@ export interface FeatureLayerProps extends LayerProps {
 }
 
 export interface GraphicsLayerProps extends LayerProps {
+  /** Blend mode for the layer. See [GraphicsLayer blendMode](https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html#blendMode). */
+  blendMode?: __esri.GraphicsLayerProperties['blendMode'];
+  /** Effect (e.g. CSS filter-like) applied to the layer. */
+  effect?: __esri.Effect | string | null;
+  /** Specifies how graphics are placed on the vertical axis (z). SceneView only. */
+  elevationInfo?: __esri.ElevationInfoProperties | null;
+  /** Initial graphics in the layer. Use layer.graphics.add() or addMany() for runtime updates, or pass a new array to replace. */
   graphics?: __esri.Graphic[];
-  elevationInfo?: any;
+  /** Unique ID for the layer. */
+  id?: string;
+  /** How the layer displays in the LayerList: "show" | "hide" | "hide-children". */
+  listMode?: 'show' | 'hide' | 'hide-children';
+  /** Maximum scale (most zoomed in) at which the layer is visible. 0 = no maximum. */
+  maxScale?: number;
+  /** When true, the layer can be persisted (e.g. in a web map). */
+  persistenceEnabled?: boolean;
+  /** Minimum scale (most zoomed out) at which the layer is visible. 0 = no minimum. */
+  minScale?: number;
+  /** Apply perspective scaling to screen-size symbols in SceneView. */
+  screenSizePerspectiveEnabled?: boolean;
+  /** Title for the layer (e.g. in LayerList). */
+  title?: string | null;
+  /** Time extent during which the layer is visible. */
+  visibilityTimeExtent?: __esri.TimeExtentProperties | null;
 }
 
 export interface ViewContext {

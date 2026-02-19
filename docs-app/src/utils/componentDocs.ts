@@ -154,8 +154,45 @@ function DataMap() {
       {
         name: 'url',
         type: 'string',
-        required: true,
+        required: false,
         description: 'URL to the feature service or feature layer'
+      },
+      {
+        name: 'portalItem',
+        type: 'PortalItemProperties',
+        required: false,
+        description: 'Portal item (e.g. { id }) to load the layer from ArcGIS Online or Enterprise'
+      },
+      {
+        name: 'fields',
+        type: 'Field[]',
+        required: false,
+        description: 'Array of field definitions for the layer'
+      },
+      {
+        name: 'geometryType',
+        type: '"point" | "polyline" | "polygon" | "multipoint"',
+        required: false,
+        description: 'Geometry type of the features'
+      },
+      {
+        name: 'objectIdField',
+        type: 'string',
+        required: false,
+        description: 'Name of the object ID field'
+      },
+      {
+        name: 'definitionExpression',
+        type: 'string',
+        required: false,
+        description: 'SQL where clause to filter features'
+      },
+      {
+        name: 'outFields',
+        type: 'string[]',
+        required: false,
+        default: '["*"]',
+        description: 'Fields to include in queries and popups'
       },
       {
         name: 'popupTemplate',
@@ -404,7 +441,7 @@ function TileMap() {
       {
         name: 'url',
         type: 'string',
-        required: true,
+        required: false,
         description: 'URL to the tile service'
       },
       {
@@ -451,6 +488,78 @@ function GraphicsMap() {
 }`,
     props: [
       {
+        name: 'graphics',
+        type: 'Graphic[]',
+        required: false,
+        description: 'Initial graphics in the layer. Pass a new array to replace; use layer.graphics.add() for incremental updates.'
+      },
+      {
+        name: 'blendMode',
+        type: 'string',
+        required: false,
+        description: 'Blend mode (e.g. "normal", "multiply", "screen"). See GraphicsLayer blendMode in the API.'
+      },
+      {
+        name: 'effect',
+        type: 'Effect | string | null',
+        required: false,
+        description: 'CSS filter-like effect applied to the layer.'
+      },
+      {
+        name: 'elevationInfo',
+        type: 'ElevationInfoProperties | null',
+        required: false,
+        description: 'How graphics are placed on the vertical axis (z). SceneView only.'
+      },
+      {
+        name: 'id',
+        type: 'string',
+        required: false,
+        description: 'Unique ID for the layer.'
+      },
+      {
+        name: 'listMode',
+        type: '"show" | "hide" | "hide-children"',
+        required: false,
+        description: 'How the layer displays in the LayerList component.'
+      },
+      {
+        name: 'maxScale',
+        type: 'number',
+        required: false,
+        description: 'Maximum scale (most zoomed in) at which the layer is visible. 0 = no maximum.'
+      },
+      {
+        name: 'minScale',
+        type: 'number',
+        required: false,
+        description: 'Minimum scale (most zoomed out) at which the layer is visible. 0 = no minimum.'
+      },
+      {
+        name: 'persistenceEnabled',
+        type: 'boolean',
+        required: false,
+        description: 'When true, the layer can be persisted (e.g. in a web map).'
+      },
+      {
+        name: 'screenSizePerspectiveEnabled',
+        type: 'boolean',
+        required: false,
+        description: 'Apply perspective scaling to screen-size symbols in SceneView.'
+      },
+      {
+        name: 'title',
+        type: 'string | null',
+        required: false,
+        description: 'Title for the layer (e.g. in LayerList).'
+      },
+      {
+        name: 'visibilityTimeExtent',
+        type: 'TimeExtentProperties | null',
+        required: false,
+        description: 'Time extent during which the layer is visible.'
+      },
+      {
         name: 'opacity',
         type: 'number',
         required: false,
@@ -473,7 +582,7 @@ function GraphicsMap() {
     ],
     instructions: [
       'Must be a child of MapView or SceneView',
-      'Use with useGraphic hook to add graphics',
+      'Use graphics prop for initial/replacement graphics or useGraphic + onLoad for incremental adds',
       'Commonly used for user drawings and temporary features'
     ]
   },
